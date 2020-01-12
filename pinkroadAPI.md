@@ -1,0 +1,246 @@
+# **Summary**
+## [**Pre-register endpoints**](#preregisterendpoints)
+* [/api/register](#apiregister)
+* [/api/getuser](#apigetuser)
+## [**Event day endpoints**](#eventdayendpoints)
+* [/api/checkin](#apicheckin)
+* [/api/getticket](#apigetticket)
+## [**Admin endpoints**](#adminendpoints)
+* [/api/admin/getusers](#apiadmingetusers)
+* [/api/admin/query](#apiadminquery)
+* [/api/admin/random](#apiadminrandom)
+* [/api/admin/edit](#apiadminedit)
+* [/api/admin/getstat](#apiadmingetstat)
+
+---
+# **Pre-register endpoints**
+## /api/register
+ 
+ #### Method: `POST`
+
+#### Request JSON 
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `ID` | `string` | บัตรประชาชน |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+| `email` | `string` | email |  
+| `faculty` | `string` | รหัสคณะ |
+| `tel` | `string` | เบอร์โทรศัพท์ |
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `400` | ข้อมูลผิดรูปแบบ ( เช่นบัตรประชาชน checksum ไม่ผ่าน) |  
+| `409` | ข้อมูลซ้ำ |  
+
+## /api/getuser
+ใช้สำหรับดูข้อมูลที่ผู้ใช้ที่มีบัตรประชาชน `id` 
+ #### Method: `GET`
+
+#### Request JSON
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `ID` | `string` | บัตรประชาชน |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+| `email` | `string` | email |  
+| `faculty` | `string` | รหัสคณะ |
+| `tel` | `string` | เบอร์โทรศัพท์ |
+
+#### Response JSON
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `ID` | `string` | บัตรประชาชน |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+| `email` | `string` | email |  
+| `faculty` | `string` | รหัสคณะ |
+| `tel` | `string` | เบอร์โทรศัพท์ |
+
+
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | username/password ไม่ถูกต้อง | 
+| `404` | ไม่เจอข้อมูล |  
+
+# **Event day endpoints**
+## /api/checkin
+ใช้สำหรับ checkin วันงาน
+#### Method: `POST`
+
+#### Request JSON:
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `QRtoken` | `string` | สำหรับตรวจสอบว่าได้สแกน QR หรือเปล่า |
+
+#### Response JSON
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `number` | `int` | เลขคิว |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | username/password ไม่ถูกต้อง |  
+
+## /api/getticket
+ใช้สำหรับรับตั่ว ( user ต้อง checkin ก่อนเท่านั้น )
+#### Method: `GET`
+
+#### Response JSON
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `number` | `int` | เลขคิว |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | username/password ไม่ถูกต้อง |  
+| `403` | user ยังไม่ได้ checkin |  
+
+# **Admin endpoints**
+## /api/admin/getusers
+ใช้สำหรับดูข้อมูล user
+#### Method: `GET`
+
+#### Request JSON:
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `range` | `object` | สำหรับระบุว่าเอา record ในช่วงไหน ( ถ้าต้องการทั้งหมดให้เป็น `null` หรือ ไม่ต้องใส่มา) |
+
+โดย `range` มีรูปแบบดังนี้
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `start` | `int` | เริ่มที่ record ที่เท่าไหร่ |
+| `end` | `int` | ถึง record ที่เท่าไหร่ |
+
+#### Response JSON
+
+`array` ของ `object` โดยแต่ละ object มีรูปแบบดังนี้
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `number` | `int` | เลขคิว |  
+| `ID` | `string` | บัตรประชาชน |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+| `email` | `string` | email |  
+| `faculty` | `string` | รหัสคณะ |
+| `tel` | `string` | เบอร์โทรศัพท์ |
+
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `400` | คำขอผิดรูปแบบ เช่น end ก่อน start | 
+| `401` | username/password ไม่ถูกต้อง | 
+
+## /api/admin/query
+ใช้สำหรับ query ข้อมูล
+#### Method: `POST`
+
+#### Request JSON:
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `number` | `int` | เลขคิว |  
+| `ID` | `string` | บัตรประชาชน |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+| `email` | `string` | email |  
+| `faculty` | `string` | รหัสคณะ |
+| `tel` | `string` | เบอร์โทรศัพท์ |
+
+ไม่จำเป็นต้องใส่มาทุก field ใส่มาเฉพาะที่จะ query
+
+#### Response JSON
+
+ข้อมูลของผู้ใช้ทุกคนที่ตรงตาม query เป็น `array` ของ `object` โดยแต่ละ object มีรูปแบบดังนี้
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `number` | `int` | เลขคิว |  
+| `ID` | `string` | บัตรประชาชน |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+| `email` | `string` | email |  
+| `faculty` | `string` | รหัสคณะ |
+| `tel` | `string` | เบอร์โทรศัพท์ |
+
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | username/password ไม่ถูกต้อง | 
+
+## /api/admin/random
+ใช้สำหรับสุ่มเลขคิวผู้ใช้
+
+#### Method: `GET`
+
+#### Response JSON
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `number` | `int` | เลขคิว |  
+| `firstname` | `string` | ชื่อ |
+| `lastname` | `string` | นามสกุล |
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | username/password ไม่ถูกต้อง | 
+
+## /api/admin/edit
+ใช้สำหรับแก้ไขข้อมูล
+#### Method: `PUT`
+
+#### Request JSON:
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `ID` | `string` | บัตรประชาชนของ user ที่จะแก้ไขข้อมูล |  
+| `firstname` | `string` | ชื่อใหม่ |
+| `lastname` | `string` | นามสกุลใหม่ |
+| `email` | `string` | email ใหม่ |  
+| `faculty` | `string` | รหัสคณะใหม่ |
+| `tel` | `string` | เบอร์โทรศัพท์ใหม่  |
+
+ไม่จำเป็นต้องใส่มาทุก field ใส่มาเฉพาะที่จะแก้ไข
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `400` | คำขอผิดรูปแบบ เช่น ไม่ได้ใส่ ID มา | 
+| `401` | username/password ไม่ถูกต้อง | 
+
+## /api/admin/getstat
+ใช้สำหรับดูจำนวนคน
+#### Method: `GET`
+
+#### Response JSON
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- |  
+| `regist` | `int` | จำนวนคนลงทะเบียน |  
+| `checkin` | `int` | จำนวนคน checkin |  
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | username/password ไม่ถูกต้อง | 
