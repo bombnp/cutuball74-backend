@@ -1,0 +1,2 @@
+service: api
+runtime: nodejs10
