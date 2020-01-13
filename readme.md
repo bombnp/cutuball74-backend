@@ -11,14 +11,17 @@
 * [/api/admin/random](#apiadminrandom)
 * [/api/admin/edit](#apiadminedit)
 * [/api/admin/getstat](#apiadmingetstat)
+## [**Authentication**](#Authentication)
+* [Authorization](#Authorization)
+* [Accessing Protected Resources](#Accessing_Protected_Resources)
 
 ---
 # **Pre-register endpoints**
 ## /api/register
- 
+
  #### Method: `POST`
 
-#### Request JSON 
+#### Request JSON
 
 | field | Type | Description |  
 | ----------- | ----------- | ----------- |  
@@ -36,19 +39,12 @@
 | `409` | ข้อมูลซ้ำ |  
 
 ## /api/getuser
-ใช้สำหรับดูข้อมูลที่ผู้ใช้ที่มีบัตรประชาชน `id` 
+ใช้สำหรับดูข้อมูลที่ผู้ใช้ที่มีบัตรประชาชน `id`
  #### Method: `GET`
 
-#### Request JSON
+ #### Request
 
-| field | Type | Description |  
-| ----------- | ----------- | ----------- |  
-| `ID` | `string` | บัตรประชาชน |  
-| `firstname` | `string` | ชื่อ |
-| `lastname` | `string` | นามสกุล |
-| `email` | `string` | email |  
-| `faculty` | `string` | รหัสคณะ |
-| `tel` | `string` | เบอร์โทรศัพท์ |
+ จำเป็นต้องมี token
 
 #### Response JSON
 
@@ -66,7 +62,7 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `401` | username/password ไม่ถูกต้อง | 
+| `401` | ไม่มี token หรือ token หมดอายุ |
 | `404` | ไม่เจอข้อมูล |  
 
 # **Event day endpoints**
@@ -75,6 +71,8 @@
 #### Method: `POST`
 
 #### Request JSON:
+
+จำเป็นต้องมี token
 
 | field | Type | Description |  
 | ----------- | ----------- | ----------- |  
@@ -91,11 +89,15 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `401` | username/password ไม่ถูกต้อง |  
+| `401` | ไม่มี token หรือ token หมดอายุ |  
 
 ## /api/getticket
 ใช้สำหรับรับตั่ว ( user ต้อง checkin ก่อนเท่านั้น )
 #### Method: `GET`
+
+#### Request
+
+จำเป็นต้องมี token
 
 #### Response JSON
 
@@ -108,7 +110,7 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `401` | username/password ไม่ถูกต้อง |  
+| `401` | ไม่มี token หรือ token หมดอายุ |  
 | `403` | user ยังไม่ได้ checkin |  
 
 # **Admin endpoints**
@@ -147,8 +149,8 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `400` | คำขอผิดรูปแบบ เช่น end ก่อน start | 
-| `401` | username/password ไม่ถูกต้อง | 
+| `400` | คำขอผิดรูปแบบ เช่น end ก่อน start |
+| `401` | username/password ไม่ถูกต้อง |
 
 ## /api/admin/query
 ใช้สำหรับ query ข้อมูล
@@ -186,7 +188,7 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `401` | username/password ไม่ถูกต้อง | 
+| `401` | username/password ไม่ถูกต้อง |
 
 ## /api/admin/random
 ใช้สำหรับสุ่มเลขคิวผู้ใช้
@@ -204,7 +206,7 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `401` | username/password ไม่ถูกต้อง | 
+| `401` | username/password ไม่ถูกต้อง |
 
 ## /api/admin/edit
 ใช้สำหรับแก้ไขข้อมูล
@@ -226,8 +228,8 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `400` | คำขอผิดรูปแบบ เช่น ไม่ได้ใส่ ID มา | 
-| `401` | username/password ไม่ถูกต้อง | 
+| `400` | คำขอผิดรูปแบบ เช่น ไม่ได้ใส่ ID มา |
+| `401` | username/password ไม่ถูกต้อง |
 
 ## /api/admin/getstat
 ใช้สำหรับดูจำนวนคน
@@ -243,4 +245,16 @@
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
-| `401` | username/password ไม่ถูกต้อง | 
+| `401` | username/password ไม่ถูกต้อง |
+
+# Authentication
+
+ในการเข้าถึง Protected Resources จำเป็นต้องมีการ Authenticate โดยอาศัยมาตรฐานดังต่อไปนี้
+
+#### Authorization
+
+รับ token จาก `/api/token` ด้วยวิธี [Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3) โดยใช้เลขบัตรประชาชนเป็น Username และ เบอร์โทรศัพท์เป็น Password
+
+#### Accessing Protected Resources
+
+ใช้ token จากข้อก่อนหน้าในการเข้าถึง Protected Resources เช่น `/api/getuser` ด้วยวิธี  [Authorization Request Header Field](https://tools.ietf.org/html/rfc6750#section-2.1)
