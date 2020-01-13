@@ -1,0 +1,9 @@
+{
+  "prod":{
+    "driver":"mysql",
+    "user": {"ENV":"DB_USER"},
+    "password": {"ENV":"DB_PASS"},
+    "database": {"ENV":"DB_NAME"},
+    "socketPath" : "/cloudsql/cutuball:asia-east2:cutuball"
+  }
+}

@@ -5,8 +5,29 @@ a nodeJS API services.
 
 ## Setting up development environment
 
+#### Install required package
 ```bash
 npm install
+```
+
+#### สร้างไฟล์ .env สำหรับเก็บรหัสผ่าน
+
+`.env`
+```
+DB_USER=root
+DB_PASS=[รหัสผ่าน]
+DB_NAME=cutuballdb
+CLOUD_SQL_CONNECTION_NAME=cutuball:asia-east2:cutuball
+```
+
+#### ตั้ง Proxy สำหรับเชื่อมต่อกับฐานข้อมูลขณะกำลังพัฒนา
+
+[Connecting MySQL client using the Cloud SQL Proxy](https://cloud.google.com/sql/docs/mysql/connect-admin-proxy)
+
+หลังตั้งค่าเสร็จแล้วสามารถเปิด Proxy โดย
+
+```bash
+./cloud_sql_proxy -dir /cloudsql/ -projects cutuball
 ```
 
 ## Starting development server
@@ -19,4 +40,12 @@ npm starts
 
 ```bash
 gcloud app deploy --project=cutuball api/api.yaml
+```
+
+## Migrating database
+
+สร้าง Database ใหม่ชื่อ `cutuballdb`
+
+```bash
+node node_modules/db-migrate/bin/db-migrate up -e prod
 ```
