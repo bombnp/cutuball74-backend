@@ -15,9 +15,10 @@ npm install
 `.env`
 ```
 DB_USER=root
-DB_PASS=[รหัสผ่าน]
+DB_PASS=[?????]
 DB_NAME=cutuballdb
-CLOUD_SQL_CONNECTION_NAME=cutuball:asia-east2:devsql
+DB_SOCKET=/cloudsql/cutuball:asia-east2:devsql
+SERVER_SECRET=[?????]
 ```
 
 #### ตั้ง Proxy สำหรับเชื่อมต่อกับฐานข้อมูลขณะกำลังพัฒนา
