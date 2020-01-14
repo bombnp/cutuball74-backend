@@ -43,6 +43,8 @@ npm start
 gcloud app deploy --project=cutuball api/api.yaml
 ```
 
+> **Note for Caution:** `--project=cutuball` นั้น **สำคัญ** มาก นั่งหัวร้อนแก้ Bug เพราะ deploy ผิด Project มันไม่สนุกเลย 😭
+
 ## Migrating database
 
 สร้าง Database ใหม่ชื่อ `cutuballdb`
