@@ -20,7 +20,7 @@ exports.up = function(db) {
     firstname : "string",
     lastname: "string",
     email: "string",
-    faulty: "string",
+    faculty: "string",
     tel: "string"
   });
 };
