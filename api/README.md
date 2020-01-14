@@ -17,7 +17,7 @@ npm install
 DB_USER=root
 DB_PASS=[รหัสผ่าน]
 DB_NAME=cutuballdb
-CLOUD_SQL_CONNECTION_NAME=cutuball:asia-east2:cutuball
+CLOUD_SQL_CONNECTION_NAME=cutuball:asia-east2:devsql
 ```
 
 #### ตั้ง Proxy สำหรับเชื่อมต่อกับฐานข้อมูลขณะกำลังพัฒนา
@@ -27,7 +27,7 @@ CLOUD_SQL_CONNECTION_NAME=cutuball:asia-east2:cutuball
 หลังตั้งค่าเสร็จแล้วสามารถเปิด Proxy โดย
 
 ```bash
-./cloud_sql_proxy -dir /cloudsql/ -projects cutuball
+./cloud_sql_proxy -dir /cloudsql/ -projects cutuball -credential_file cutuball-6828b1402a73.json
 ```
 
 ## Starting development server

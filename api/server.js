@@ -19,12 +19,13 @@ const createPool = async () => {
 
   pool.getConnection(function (err, conection) {
     if (err) throw err;
-    console.log("DB connectted")
+    console.log("DB connected")
   })
 };
 createPool();
 
 
+// Setup express
 
 const express = require('express');
 const app = express();
@@ -32,6 +33,7 @@ const app = express();
 app.get('/', (req, res) => {
   res.send('Hello from App Engine!');
 });
+
 
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;
