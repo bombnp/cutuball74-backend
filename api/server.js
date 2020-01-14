@@ -40,7 +40,7 @@ passport.use(auth.buildJwtStrategy(dbPool));
 app.get('/test/protected',
    passport.authenticate('jwt', {session:false}),
    function (req, res) {
-     res.send("Protected Enpoint Reached.");
+     res.send("Protected Enpoint Reached.<br>Welcome " + req.user.firstname + "!");
    }
  );
 
