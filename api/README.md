@@ -33,7 +33,7 @@ CLOUD_SQL_CONNECTION_NAME=cutuball:asia-east2:devsql
 ## Starting development server
 
 ```bash
-npm starts
+npm start
 ```
 
 ## Deploying API service (backend)
