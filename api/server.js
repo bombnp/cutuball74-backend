@@ -1,31 +1,49 @@
 //Load environment variable from dot env files
-require('dotenv').config()
+require('dotenv').config();
 
 
-//Load config from config.js
-config = require('./config.js')
+// Import
+const mysql = require('mysql');
+const express = require('express');
+const bodyParser = require('body-parser');
+const passport = require('passport');
 
-
-//Connect to mysql
-//From https://cloud.google.com/sql/docs/mysql/connect-app-engine?hl=th
-mysql = require('mysql')
-
-let pool;
-const createPool = async () => {
-  pool = await mysql.createPool(config.dbConfig);
-};
-createPool();
+const config = require('./config.js');
+const user = require('./user.js');
+const auth = require('./auth.js');
 
 
 // Setup express
-const express = require('express');
 const app = express();
 
 
-//Routing
+//Connect DB
+dbPool = mysql.createPool(config.dbConfig);
+
+
+//Welcome page
 app.get('/', (req, res) => {
-  res.send('Hello from App Engine!');
+  res.send('Hello from CUTUBall API service!');
 });
+
+
+//Auth endpoint
+authServ = auth.buildServer(dbPool);
+app.post('/token',
+  bodyParser.urlencoded({ extended: false }),
+  authServ.token(),
+  authServ.errorHandler()
+);
+passport.use(auth.buildJwtStrategy(dbPool));
+
+// Example Protected Endpoint
+app.get('/test/protected',
+   passport.authenticate('jwt', {session:false}),
+   function (req, res) {
+     res.send("Protected Enpoint Reached.");
+   }
+ );
+
 
 
 // Start server
