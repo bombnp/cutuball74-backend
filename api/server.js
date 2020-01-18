@@ -7,6 +7,7 @@ const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const cors = require('cors');
 
 const config = require('./config.js');
 const user = require('./user.js');
@@ -19,6 +20,12 @@ const app = express();
 
 //Connect DB
 dbPool = mysql.createPool(config.dbConfig);
+
+
+// Enable CORS
+app.use(cors());
+app.options('*', cors());
+//TODO more strict cors options.
 
 
 //Welcome page

@@ -11,6 +11,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "db-migrate": "^0.11.6",
     "db-migrate-mysql": "^2.1.0",
     "dotenv": "^8.2.0",
