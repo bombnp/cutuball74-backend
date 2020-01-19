@@ -1,3 +1,6 @@
+const database = require('./database.js')
+
+
 function userFromRow(row) {
   return {
     id: row.id,
@@ -16,8 +19,8 @@ function userFromRow(row) {
  * @param {MySQLConnection} db
  * @param {Function} callback
  */
-function getUserFromId(userid, db, callback) {
-    db.query('SELECT * FROM `users` WHERE `id` = ?;', [userid], function (err, results, fields) {
+function getUserFromId(userid, callback) {
+  database.getPool().query('SELECT * FROM `users` WHERE `id` = ?;', [userid], function (err, results, fields) {
       if (err) {
         callback(err);
         return;

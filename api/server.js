@@ -3,36 +3,19 @@ require('dotenv').config();
 
 
 // Import
-const mysql = require('mysql');
 const express = require('express');
-const bodyParser = require('body-parser');
-const passport = require('passport');
-const cors = require('cors');
 
-const config = require('./config.js');
-const user = require('./user.js');
-const auth = require('./auth.js');
+const route = require('./controller/route.js');
 
 
 // Setup express
 const app = express();
 
 
-//Connect DB
-dbPool = mysql.createPool(config.dbConfig);
+//Routing
+app.use(route);
 
-
-// Enable CORS
-app.use(cors());
-app.options('*', cors());
-//TODO more strict cors options.
-
-
-//Welcome page
-app.get('/', (req, res) => {
-  res.send('Hello from CUTUBall API service!');
-});
-
+/*
 
 //Auth endpoint
 authServ = auth.buildServer(dbPool);
@@ -52,6 +35,7 @@ app.get('/test/protected',
  );
 
 
+*/
 
 // Start server
 // Listen to the App Engine-specified port, or 8080 otherwise
