@@ -9,6 +9,7 @@
 * [/api/admin/getusers](#apiadmingetusers)
 * [/api/admin/query](#apiadminquery)
 * [/api/admin/random](#apiadminrandom)
+* [/api/admin/pastrandom](#apiadminpastrandom)
 * [/api/admin/edit](#apiadminedit)
 * [/api/admin/getstat](#apiadmingetstat)
 ## [**Authentication**](#Authentication)
@@ -207,6 +208,23 @@
  | status code | Description |  
 | ----------- | ----------- |  
 | `401` | username/password ไม่ถูกต้อง |
+
+## /api/admin/pastrandom
+
+#### Method: `GET`
+
+#### Response JSON
+
+Array ของ ผลลัพธ์เก่าของ `/api/admin/random` เรียงจากเก่าที่สุดไปใหม่
+
+```json
+{
+  "history" : [
+    {"number": 1234, "firstname": "ex", "lastname":"ex"},
+    {"number": 12345, "firstname": "ex", "lastname":"ex"},
+  ]
+}
+```
 
 ## /api/admin/edit
 ใช้สำหรับแก้ไขข้อมูล
