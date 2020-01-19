@@ -71,9 +71,7 @@ SERVER_SECRET=[?????]
 **โดยย่อ**
 1. Download `cloud_sql_proxy`
 2. สร้าง Folder `/cloudsql/`
-3. ```bash
-./cloud_sql_proxy -dir /cloudsql/ -projects cutuball -credential_file cutuball-6828b1402a73.json
-```
+3. `./cloud_sql_proxy -dir /cloudsql/ -projects cutuball -credential_file cutuball-6828b1402a73.json`
 
 ใช้คำสั่ง
 
