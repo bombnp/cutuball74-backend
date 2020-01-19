@@ -1,10 +1,17 @@
+# Copied from stackoverflow https://stackoverflow.com/a/55831186/11263767
+
+env: standard
 runtime: nodejs10
+service: default
 
 handlers:
+  - url: /static
+    static_dir: build/static
 
-- url: /
-  static_files: www/index.html
-  upload: www/index.html
+  - url: /(.*\.(json|ico|js))$
+    static_files: build/\1
+    upload: build/.*\.(json|ico|js)$
 
-- url: /
-  static_dir: www
+  - url: .*
+    static_files: build/index.html
+    upload: build/index.html

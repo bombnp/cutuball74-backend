@@ -1,0 +1,3 @@
+[submodule "static/repo"]
+	path = static/repo
+	url = git@github.com:paphonb/cutuball-register.git
