@@ -17,10 +17,10 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
   return db.createTable('users', {
     id : {type: 'string', length:13, primaryKey:true},
-    name : "string",
-    email: "string",
-    faculty: "string",
-    tel: "string"
+    name : {type: "string", notNull: true},
+    email: {type: "string", notNull: true},
+    faculty: {type: "string", notNull: true},
+    tel: {type: "string", notNull: true}
   });
 };
 

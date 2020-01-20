@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const auth = require('./auth.js');
-const dummy = require('./dummy.js')
+const dummy = require('./dummy.js');
+const users = require('./users.js');
 
 
 const router = express.Router();
@@ -43,6 +44,20 @@ router.get('/test/protected',
    passport.authenticate('jwt', {session:false}),
    dummy.testprotect
  );
+
+
+ //ROUTE /getuser
+router.get('/getuser',
+  passport.authenticate('jwt', {session:false}),
+  users.getuser
+);
+
+
+//ROUTE /register
+router.post('/register',
+  bodyParser.json(),
+  users.register
+)
 
 
 module.exports = router;

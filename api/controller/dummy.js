@@ -6,7 +6,7 @@ function ping(req, res) {
 
 //Protected resources
 function testprotect(req, res) {
-  res.send("Protected Enpoint Reached.<br>Welcome " + req.user.firstname + "!");
+  res.send("Protected Enpoint Reached.<br>Welcome " + req.user.name + "!");
 }
 
 
