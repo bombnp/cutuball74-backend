@@ -62,7 +62,6 @@
  | status code | Description |  
 | ----------- | ----------- |  
 | `401` | ไม่มี token หรือ token หมดอายุ |
-| `404` | ไม่เจอข้อมูล |  
 
 # **Event day endpoints**
 ## /api/checkin
