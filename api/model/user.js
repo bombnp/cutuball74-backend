@@ -4,8 +4,7 @@ const database = require('./database.js')
 function userFromRow(row) {
   return {
     id: row.id,
-    firstname: row.firstname,
-    lastname: row.lastname,
+    name: row.name,
     email: row.email,
     faculty: row.faculty,
     tel: row.tel
