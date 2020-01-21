@@ -40,14 +40,17 @@ function register(req, res) {
       return;
     }
     user.saveUserToDb(userjsontouserobj(data), function (err) {
-      if (err.code ==  'ER_DUP_ENTRY') {
-        error(409, "DUPID", "User ID already exist");
+      if (err) {
+        if (err.code ==  'ER_DUP_ENTRY') {
+          error(409, "DUPID", "User ID already exist");
+          return;
+        }
+        throw err;
         return;
       }
-      if (err) {
-        throw err;
-      }
+
       res.sendStatus(200);
+
     });
   });
 }
