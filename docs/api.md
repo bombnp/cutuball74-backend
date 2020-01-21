@@ -9,7 +9,7 @@
 * [/api/admin/getusers](#apiadmingetusers)
 * [/api/admin/query](#apiadminquery)
 * [/api/admin/random](#apiadminrandom)
-* [/api/admin/pastrandom](#apiadminpastrandom)
+* [/api/admin/randomhistory](#apiadminrandomhistory)
 * [/api/admin/edit](#apiadminedit)
 * [/api/admin/getstat](#apiadmingetstat)
 ## [**Authentication**](#Authentication)
@@ -200,7 +200,7 @@
 | ----------- | ----------- |  
 | `401` | ไม่มี token หรือ token หมดอายุ |
 
-## /api/admin/pastrandom
+## /api/admin/randomhistory
 
 #### Method: `GET`
 
