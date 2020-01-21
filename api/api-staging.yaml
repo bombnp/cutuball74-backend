@@ -1,0 +1,5 @@
+service: api-staging
+runtime: nodejs10
+
+includes:
+  - devcredential.yaml
