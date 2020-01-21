@@ -3,3 +3,4 @@ runtime: nodejs10
 
 includes:
   - credential.yaml
+  - common.yaml
