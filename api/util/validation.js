@@ -34,6 +34,9 @@ function validateUserJson(data, callback) {
     "required": ["ID", "name", "email", "faculty", "tel"]
   };
 
+  // strip dashes
+  data.tel = data.tel.replace("-","");
+
   //Must return exaxtly true if succeed
   let validators = [ (data) => data ? true: "No data",
    (data) => jsonvalidator(data, schema).valid || "Invalid json schema",
@@ -59,4 +62,16 @@ function validateUserJson(data, callback) {
     callback(null);
 }
 
-module.exports = {validateUserJson}
+/**
+ * 
+ * @param {Response} res 
+ * @param {Number} status 
+ * @param {String} code 
+ * @param {String} desc 
+ */
+
+function handleError(res, status, code, desc){
+  res.status(status).json({"error" : code, "error_description":desc});
+}
+
+module.exports = { validateUserJson, handleError }

@@ -5,7 +5,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const user = require('../model/user.js');
 const config = require('../config.js');
-const database = require('../model/database.js')
+const { handleError } = require("../util/validation.js");
 
 
 /** Common Config for JWTToken
@@ -75,5 +75,12 @@ authServer.exchange(oauth2orize.exchange.password(
     }
   ));
 
+function checkAdminStatus(req, res, next) {
+  let user = req.user;
+  if(user.id != "admin")
+    handleError(res, 403, "NOTADMIN", "User is not admin");
+  else
+    next();
+}
 
-module.exports = {authServer, jwtStrategy};
+module.exports = {authServer, jwtStrategy, checkAdminStatus};

@@ -6,6 +6,7 @@ const passport = require('passport');
 const auth = require('./auth.js');
 const dummy = require('./dummy.js');
 const users = require('./users.js');
+const admin = require('./admin.js');
 
 
 const router = express.Router();
@@ -57,6 +58,12 @@ router.get('/getuser',
 router.post('/register',
   bodyParser.json(),
   users.register
+)
+
+router.get("/admin/ping",
+  passport.authenticate("jwt", {session:false}),
+  auth.checkAdminStatus,
+  admin.ping
 )
 
 
