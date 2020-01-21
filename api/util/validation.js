@@ -5,7 +5,7 @@ const jsonvalidator = require('jsonschema').validate;
   *
   * @param {String} s
   */
-function validthaiid(s) {
+function validateThaiID(s) {
   let x = 0;
   for (let i = 0; i < 12; i++) {
     x += parseInt(s[i]) * (13-i);
@@ -20,7 +20,7 @@ function validthaiid(s) {
   * @param {Object} data
   * @param {Function} callback receiving error message or null if no error
   */
-function validateuserjson(data, callback) {
+function validateUserJson(data, callback) {
   //Test definition
   const schema = {
     "type": "object",
@@ -35,26 +35,28 @@ function validateuserjson(data, callback) {
   };
 
   //Must return exaxtly true if succeed
-  let check = [ (data) => data ? true: "No data",
+  let validators = [ (data) => data ? true: "No data",
    (data) => jsonvalidator(data, schema).valid || "Invalid json schema",
    (data) => data.ID.length == 13 || "Invalid id length",
    (data) => fieldvalidator.isNumeric(data.ID) || "Non numeric ID",
-   (data) => validthaiid(data.ID) || "Invalid ID checksum",
+   (data) => validateThaiID(data.ID) || "Invalid ID checksum",
    (data) => fieldvalidator.isMobilePhone(data.tel, 'th-TH') || "Invalid mobile phone",
    (data) => fieldvalidator.isEmail(data.email) || "Invalid Email"
- ];
+  ];
 
+  let validationErrors = [];
 
- //Testing
- for (let i = 0; i < check.length; i++) {
-   let res = check[i](data);
-   if (res != true) {
-    callback(res);
-    return;
-   }
- }
+  validators.forEach((validator) => {
+    let res = validator(data);
+    if(res != true) {
+      validationErrors.push(res);
+    }
+  })
 
- callback(null);
+  if(validationErrors)
+    callback(validationErrors.join(", "));
+  else
+    callback(null);
 }
 
-module.exports = {validateuserjson}
+module.exports = {validateUserJson}

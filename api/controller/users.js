@@ -3,7 +3,7 @@ const user = require('../model/user.js');
 const validate = require('../util/validation.js');
 
 
-function getuser(req, res) {
+function getUser(req, res) {
   let user = req.user;
   let output = {
     "ID": user.id,
@@ -16,7 +16,7 @@ function getuser(req, res) {
 }
 
 
-function userjsontouserobj(data) {
+function userJsonToUserObj(data) {
   return {
     id: data.ID,
     name: data.name,
@@ -30,23 +30,22 @@ function userjsontouserobj(data) {
 function register(req, res) {
   let data = req.body;
 
-  error = (status, code, desc) => {
-    res.status(status).json({"error" : code, "error_desccription":desc});
+  handleError = (status, code, desc) => {
+    res.status(status).json({"error" : code, "error_description":desc});
   }
 
-  validate.validateuserjson(data, function (validationerr) {
+  validate.validateUserJson(data, function (validationerr) {
     if (validationerr) {
-      error(400, "VALIDATIONERR", validationerr)
+      handleError(400, "VALIDATIONERR", validationerr)
       return;
     }
-    user.saveUserToDb(userjsontouserobj(data), function (err) {
+    user.saveUserToDb(userJsonToUserObj(data), function (err) {
       if (err) {
         if (err.code ==  'ER_DUP_ENTRY') {
-          error(409, "DUPID", "User ID already exist");
+          handleError(409, "DUPID", "User ID already exist");
           return;
         }
         throw err;
-        return;
       }
 
       res.sendStatus(200);
@@ -55,4 +54,4 @@ function register(req, res) {
   });
 }
 
-module.exports = {getuser, register};
+module.exports = {getUser, register};

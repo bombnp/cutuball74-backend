@@ -42,14 +42,14 @@ passport.use(auth.jwtStrategy);
 // ROUTE /test/protected Example Protected Endpoint
 router.get('/test/protected',
    passport.authenticate('jwt', {session:false}),
-   dummy.testprotect
+   dummy.testProtect
  );
 
 
  //ROUTE /getuser
 router.get('/getuser',
   passport.authenticate('jwt', {session:false}),
-  users.getuser
+  users.getUser
 );
 
 
