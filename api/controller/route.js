@@ -46,4 +46,6 @@ router.get('/admin/getusers', passport.authenticate('jwt', { session: false }), 
 
 router.get('/admin/query', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, error.safeBodyParserJson, admin.queryUser)
 
+router.get('/admin/getstat', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.getStat)
+
 module.exports = router

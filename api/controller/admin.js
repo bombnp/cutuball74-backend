@@ -32,6 +32,7 @@ function getUsers(req, res) {
     res.json(users)
   })
 }
+
 function queryUser(req, res) {
   let data = { column: req.query.column, value: req.query.value }
   user.queryUser(data, function(err, users) {
@@ -40,4 +41,11 @@ function queryUser(req, res) {
   })
 }
 
-module.exports = { ping, editUser, getUsers, queryUser }
+function getStat(req, res) {
+  user.getStat(function(err, stat) {
+    if (err) throw err
+    res.json(stat)
+  })
+}
+
+module.exports = { ping, editUser, getUsers, queryUser, getStat }

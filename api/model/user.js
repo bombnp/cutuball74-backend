@@ -54,6 +54,7 @@ function getUsers(range, callback, conn) {
  * @param {SqlConnection} conn
  * @param {Boolean} overwrite
  */
+
 function saveUserToDb(user, callback, conn, overwrite) {
   conn = conn || database.getPool()
   let q = 'INSERT INTO `users` (`id`, `name`, `email`, `faculty`, `tel`) VALUES (?, ?, ?, ?, ?);'
@@ -79,4 +80,17 @@ function queryUser(data, callback, conn) {
   })
 }
 
-module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser }
+function getStat(callback, conn) {
+  conn = conn || database.getPool()
+  q = 'SELECT(SELECT COUNT(*) FROM `users`) AS `regist`,(SELECT COUNT(*) FROM `checkedin_users`) AS `checkedin`;'
+  conn.query(q, [], function(err, results, fields) {
+    if (err) {
+      callback(err)
+      return
+    }
+    stat = { regist: results[0].regist, checkin: results[0].checkedin }
+    callback(null, stat)
+  })
+}
+
+module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser, getStat }
