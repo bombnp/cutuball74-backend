@@ -62,6 +62,7 @@ function validateUserJson(data, callback) {
     callback(null);
 }
 
+<<<<<<< HEAD
 /**
  * 
  * @param {Response} res
@@ -69,9 +70,8 @@ function validateUserJson(data, callback) {
  * @param {String} code 
  * @param {String} desc 
  */
+=======
+>>>>>>> eabad428725810b6723dd0825182060e47e090ac
 
-function handleError(res, status, code, desc){
-  res.status(status).json({"error" : code, "error_description":desc});
-}
 
-module.exports = { validateUserJson, handleError }
+module.exports = { validateUserJson }

@@ -1,6 +1,6 @@
-service: api
+service: api-staging
 runtime: nodejs10
 
 includes:
-  - credential.yaml
+  - devcredential.yaml
   - common.yaml

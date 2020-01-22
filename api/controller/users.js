@@ -1,6 +1,7 @@
 
 const user = require('../model/user.js');
-const { validateUserJson, handleError } = require('../util/validation.js');
+const { validateUserJson} = require('../util/validation.js');
+const { handleError } = require('./error.js');
 
 
 function getUser(req, res) {

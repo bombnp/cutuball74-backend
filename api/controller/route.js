@@ -7,6 +7,7 @@ const auth = require('./auth.js');
 const dummy = require('./dummy.js');
 const users = require('./users.js');
 const admin = require('./admin.js');
+const error = require('./error.js');
 
 
 const router = express.Router();
@@ -56,8 +57,9 @@ router.get('/getuser',
 
 //ROUTE /register
 router.post('/register',
-  bodyParser.json(),
-  users.register
+  error.safeBodyParserJson,
+  users.register,
+
 )
 
 router.get("/admin/ping",

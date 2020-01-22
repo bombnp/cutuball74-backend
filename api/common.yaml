@@ -1,0 +1,4 @@
+handlers:
+- url: /.*
+  secure: always
+  script: auto
