@@ -59,7 +59,6 @@ function saveUserToDb(user, callback, conn, overwrite) {
   conn = conn || database.getPool()
   let q = 'INSERT INTO `users` (`id`, `name`, `email`, `faculty`, `tel`) VALUES (?, ?, ?, ?, ?);'
   if (overwrite) {
-    // q = 'REPLACE INTO `users` (`id`, `name`, `email`, `faculty`, `tel`) VALUES (?, ?, ?, ?, ?);'
     q = 'UPDATE `users` SET `name` = ?, `email` = ?, `faculty` = ?, `tel` = ? WHERE `id` = ?;'
   }
   conn.query(q, [user.name, user.email, user.faculty, user.tel, user.id], function(error, results, fields) {
