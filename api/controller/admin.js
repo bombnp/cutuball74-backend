@@ -26,7 +26,7 @@ function editUser(req, res) {
   })
 }
 function getUsers(req, res) {
-  let data = req.body
+  let data = { start: req.query.start, end: req.query.end }
   user.getUsers(data, function(err, users) {
     if (err) {
       console.log('ERROR')

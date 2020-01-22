@@ -37,7 +37,7 @@ function getUsers(range, callback, conn) {
   conn = conn || database.getPool()
   const start = parseInt(range.start)
   const end = parseInt(range.end)
-  conn.query('SELECT * FROM `users` limit ?,?;', [start, end - start + 1], function(err, results, fields) {
+  conn.query('SELECT * FROM `users` limit ?,?;', [start - 1, end - start + 1], function(err, results, fields) {
     if (err) {
       callback(err)
       return

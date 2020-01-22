@@ -3,7 +3,6 @@ const { validateUserJson } = require('../util/validation.js')
 const { handleError } = require('./error.js')
 
 function getUser(req, res) {
-  // console.log(req.user)
   let user = req.user
   let output = {
     ID: user.id,
