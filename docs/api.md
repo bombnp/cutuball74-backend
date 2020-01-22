@@ -145,20 +145,16 @@
 
 ## /api/admin/query
 ใช้สำหรับ query ข้อมูล
-#### Method: `POST`
+#### Method: `GET`
 
-#### Request JSON:
+#### Request Parameter:
 
-| field | Type | Description |  
+| Parameter | Type | Description |  
 | ----------- | ----------- | ----------- |  
-| `number` | `int` | เลขคิว |  
-| `ID` | `string` | บัตรประชาชน |  
-| `name` | `string` | ชื่อ |
-| `email` | `string` | email |  
-| `faculty` | `string` | รหัสคณะ |
-| `tel` | `string` | เบอร์โทรศัพท์ |
+| `column` | `string` | ชื่อ column ที่ต้องการ search(filter) |
+| `value` | `int` | ค่าที่ต้องการ search |
 
-ไม่จำเป็นต้องใส่มาทุก field ใส่มาเฉพาะที่จะ query
+ไม่จำเป็นต้องใส่ค่า value ให้ถูกต้องทุกตัว เพียงแค่มีบางส่วนก็ query เจอ
 
 #### Response JSON
 
