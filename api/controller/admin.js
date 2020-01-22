@@ -71,6 +71,11 @@ function clearRandomHistory(req, res) {
 
 function deleteUser(req, res) {
   let id = req.query.id
+  if(!id)
+  {
+    handleError(res, 400, 'NOIDERR', "Can't delete without ID")
+    return;
+  }
   user.deleteUser(id, function(err) {
     if (err) throw err
     res.sendStatus(200)
