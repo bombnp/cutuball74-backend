@@ -11,6 +11,7 @@
 * [/api/admin/random](#apiadminrandom)
 * [/api/admin/randomhistory](#apiadminrandomhistory)
 * [/api/admin/edit](#apiadminedit)
+* [/api/admin/delete](#apiadmindelete)
 * [/api/admin/getstat](#apiadmingetstat)
 ## [**Authentication**](#Authentication)
 * [Authorization](#Authorization)
