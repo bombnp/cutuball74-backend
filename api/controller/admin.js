@@ -35,6 +35,10 @@ function getUsers(req, res) {
 
 function queryUser(req, res) {
   let data = { column: req.query.column, value: req.query.value }
+  if(!data.column || !data.value){
+    handleError(res, 400, 'NOPARAM', "Can't query without column and value");
+    return;
+  }
   user.queryUser(data, function(err, users) {
     if (err) throw err
     res.json(users)
@@ -73,7 +77,7 @@ function deleteUser(req, res) {
   let id = req.query.id
   if(!id)
   {
-    handleError(res, 400, 'NOIDERR', "Can't delete without ID")
+    handleError(res, 400, 'NOPARAM', "Can't delete without ID")
     return;
   }
   user.deleteUser(id, function(err) {
