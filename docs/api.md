@@ -10,6 +10,7 @@
 * [/api/admin/query](#apiadminquery)
 * [/api/admin/random](#apiadminrandom)
 * [/api/admin/randomhistory](#apiadminrandomhistory)
+* [/api/admin/clearhistory](#apiadminclearhistory)
 * [/api/admin/edit](#apiadminedit)
 * [/api/admin/delete](#apiadmindelete)
 * [/api/admin/getstat](#apiadmingetstat)
@@ -208,6 +209,22 @@ Array ของ ผลลัพธ์เก่าของ `/api/admin/random` �
   ]
 }
 ```
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | ไม่มี token หรือ token หมดอายุ |
+
+## /api/admin/clearhistory
+
+#### Method: `DELETE`
+
+ล้างประวัติการสุ่มเลขติวผู้ใช้
+
+#### Error
+ | status code | Description |  
+| ----------- | ----------- |  
+| `401` | ไม่มี token หรือ token หมดอายุ |
 
 ## /api/admin/edit
 ใช้สำหรับแก้ไขข้อมูล
