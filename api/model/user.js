@@ -42,7 +42,6 @@ function getUsers(range, callback, conn) {
       callback(err)
       return
     }
-
     users = results.map(userFromRow)
     callback(null, users)
   })
@@ -66,4 +65,18 @@ function saveUserToDb(user, callback, conn, overwrite) {
   })
 }
 
-module.exports = { getUserFromId, getUsers, saveUserToDb }
+function queryUser(data, callback, conn) {
+  conn = conn || database.getPool()
+  q = 'SELECT * FROM `users` WHERE ?? LIKE ?;'
+  let value = '%' + data.value + '%'
+  conn.query(q, [data.column, value], function(err, results, fields) {
+    if (err) {
+      callback(err)
+      return
+    }
+    users = results.map(userFromRow)
+    callback(null, users)
+  })
+}
+
+module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser }

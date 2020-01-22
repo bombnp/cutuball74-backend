@@ -28,12 +28,16 @@ function editUser(req, res) {
 function getUsers(req, res) {
   let data = { start: req.query.start, end: req.query.end }
   user.getUsers(data, function(err, users) {
-    if (err) {
-      console.log('ERROR')
-      throw err
-    }
+    if (err) throw err
+    res.json(users)
+  })
+}
+function queryUser(req, res) {
+  let data = { column: req.query.column, value: req.query.value }
+  user.queryUser(data, function(err, users) {
+    if (err) throw err
     res.json(users)
   })
 }
 
-module.exports = { ping, editUser, getUsers }
+module.exports = { ping, editUser, getUsers, queryUser }

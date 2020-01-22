@@ -44,4 +44,6 @@ router.put('/admin/edit', passport.authenticate('jwt', { session: false }), auth
 
 router.get('/admin/getusers', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, error.safeBodyParserJson, admin.getUsers)
 
+router.get('/admin/query', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, error.safeBodyParserJson, admin.queryUser)
+
 module.exports = router
