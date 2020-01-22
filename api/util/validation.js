@@ -34,12 +34,21 @@ function validateUserJson(data, callback) {
     "required": ["ID", "name", "email", "faculty", "tel"]
   };
 
-  // strip dashes
-  data.tel = data.tel.replace("-","");
+  // pre-requisite format check
+  if(!data) {
+    callback("No data");
+    return;
+  }
+  if(!jsonvalidator(data, schema).valid) {
+    callback("Invalid json schema");
+    return;
+  }
 
-  //Must return exaxtly true if succeed
-  let validators = [ (data) => data ? true: "No data",
-   (data) => jsonvalidator(data, schema).valid || "Invalid json schema",
+  // strip dashes from telephone
+  data.tel = data.tel.replace(/-/g,"");
+
+  //Must return exaxtly true if succeeds
+  let validators = [ 
    (data) => data.ID.length == 13 || "Invalid id length",
    (data) => fieldvalidator.isNumeric(data.ID) || "Non numeric ID",
    (data) => validateThaiID(data.ID) || "Invalid ID checksum",
@@ -62,16 +71,6 @@ function validateUserJson(data, callback) {
     callback(null);
 }
 
-<<<<<<< HEAD
-/**
- * 
- * @param {Response} res
- * @param {Number} status 
- * @param {String} code 
- * @param {String} desc 
- */
-=======
->>>>>>> eabad428725810b6723dd0825182060e47e090ac
 
 
 module.exports = { validateUserJson }
