@@ -18,7 +18,7 @@ function validateThaiID(s) {
 /** Check if data object conform with user data API JSON
   *
   * @param {Object} data
-  * @param {Function} callback receiving error message or null if no error
+  * @param {Function} callback takes in one string parameter - error string. NULL if no error.
   */
 function validateUserJson(data, callback) {
   //Test definition
@@ -64,7 +64,7 @@ function validateUserJson(data, callback) {
 
 /**
  * 
- * @param {Response} res 
+ * @param {Response} res
  * @param {Number} status 
  * @param {String} code 
  * @param {String} desc 
