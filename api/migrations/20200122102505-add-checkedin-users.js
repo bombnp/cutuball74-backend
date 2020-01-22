@@ -15,12 +15,14 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('users', {
+  return db.createTable("checkedin_users", {
     id: {type: 'string', length:13, primaryKey:true},
     name: {type: "string", notNull: true},
     email: {type: "string", notNull: true},
     faculty: {type: "string", notNull: true},
-    tel: {type: "string", notNull: true}
+    tel: {type: "string", notNull: true},
+    createdAt: {type: "timestamp", defaultValue: new String("CURRENT_TIMESTAMP")},
+    modifiedAt: {type: "timestamp", defaultValue: new String("CURRENT_TIMESTAMP")}
   });
 };
 

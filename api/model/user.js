@@ -6,7 +6,15 @@ function userFromRow(row) {
     name: row.name,
     email: row.email,
     faculty: row.faculty,
-    tel: row.tel
+    tel: row.tel,
+    number: row.number
+  }
+}
+
+function ticketFromRow(row) {
+  return {
+    name: row.name,
+    number: row.number
   }
 }
 
@@ -56,7 +64,7 @@ function getUsers(range, callback, conn) {
  */
 
 function saveUserToDb(user, callback, conn, overwrite) {
-  conn = conn || database.getPool()
+  conn = conn || database.getPool();
   let q = 'INSERT INTO `users` (`id`, `name`, `email`, `faculty`, `tel`) VALUES (?, ?, ?, ?, ?);'
   if (overwrite) {
     q = 'UPDATE `users` SET `name` = ?, `email` = ?, `faculty` = ?, `tel` = ? WHERE `id` = ?;'
@@ -67,7 +75,7 @@ function saveUserToDb(user, callback, conn, overwrite) {
 }
 
 function queryUser(data, callback, conn) {
-  conn = conn || database.getPool()
+  conn = conn || database.getPool();
   q = 'SELECT * FROM `users` WHERE ?? LIKE ?;'
   let value = '%' + data.value + '%'
   conn.query(q, [data.column, value], function(err, results, fields) {
@@ -81,7 +89,7 @@ function queryUser(data, callback, conn) {
 }
 
 function getStat(callback, conn) {
-  conn = conn || database.getPool()
+  conn = conn || database.getPool();
   q = 'SELECT(SELECT COUNT(*) FROM `users`) AS `regist`,(SELECT COUNT(*) FROM `checkedin_users`) AS `checkedin`;'
   conn.query(q, [], function(err, results, fields) {
     if (err) {
@@ -93,4 +101,64 @@ function getStat(callback, conn) {
   })
 }
 
-module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser, getStat }
+function randomizeUser(callback, conn) {
+  conn = conn || database.getPool();
+
+  // get number of unselected users
+  q1 = "SELECT(SELECT COUNT(*) FROM checkedin_users) AS checkedin_count,(SELECT COUNT(*) FROM selected_users) AS selected_count;";
+  conn.query(q1, function(err, results, fields) {
+    if(err) {
+      callback(err);
+      return;
+    }
+
+    if(results[0].checkedin_count == results[0].selected_count)
+      throw "No more user to randomize";
+
+    // select unselected users
+    q2 = "SELECT checkedin_users.id, checkedin_users.name, checkedin_users.email, checkedin_users.faculty, checkedin_users.tel, checkedin_users.number FROM checkedin_users LEFT JOIN selected_users ON checkedin_users.number = selected_users.number WHERE selected_users.number IS NULL LIMIT 1 OFFSET ?;";
+    conn.query(q2, [Math.floor(Math.random() * (results[0].checkedin_count - results[0].selected_count))], function(err, results, fields) {
+      if(err) {
+        callback(err);
+        return;
+      }
+
+      users = results.map(userFromRow);
+      ticket = results.map(ticketFromRow)[0];
+
+      q3 = "INSERT INTO selected_users (id, name, email, faculty, tel, number) VALUES (?, ?, ?, ?, ?, ?);";
+      conn.query(q3, [users[0].id, users[0].name, users[0].email, users[0].faculty, users[0].tel, users[0].number], function(err, results, fields) {
+        if(err) {
+          callback(err);
+          return;
+        }
+
+        
+        callback(null, ticket);
+      })
+    })
+  })
+}
+
+function getRandomHistory(callback, conn) {
+  conn = conn || database.getPool();
+
+  q = "SELECT number, name FROM selected_users;";
+  conn.query(q, function(err, results, fields) {
+    if(err){
+      callback(err);
+      return;
+    }
+    tickets = results.map(ticketFromRow);
+    callback(null, tickets);
+  })
+}
+
+function clearRandomHistory(callback, conn) {
+  conn = conn || database.getPool();
+  conn.query("TRUNCATE TABLE selected_users;", function(err, results, fields) {
+    callback(err);
+  });
+}
+
+module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser, getStat, randomizeUser, clearRandomHistory, getRandomHistory };

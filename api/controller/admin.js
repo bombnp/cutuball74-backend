@@ -48,4 +48,25 @@ function getStat(req, res) {
   })
 }
 
-module.exports = { ping, editUser, getUsers, queryUser, getStat }
+function randomizeUser(req, res) {
+  user.randomizeUser(function(err, ticket) {
+    if(err) throw err;
+    res.json(ticket);
+  })
+}
+
+function getRandomHistory(req, res) {
+  user.getRandomHistory(function(err, tickets) {
+    if(err) throw err;
+    res.json(tickets);
+  })
+}
+
+function clearRandomHistory(req, res) {
+  user.clearRandomHistory(function(err) {
+    if(err) throw err;
+    res.sendStatus(200);
+  })
+}
+
+module.exports = { ping, editUser, getUsers, queryUser, getStat, randomizeUser, getRandomHistory , clearRandomHistory };

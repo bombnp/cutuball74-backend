@@ -48,4 +48,10 @@ router.get('/admin/query', passport.authenticate('jwt', { session: false }), aut
 
 router.get('/admin/getstat', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.getStat)
 
+router.get('/admin/random', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.randomizeUser)
+
+router.get('/admin/randomhistory', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.getRandomHistory)
+
+router.delete('/admin/clearhistory', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.clearRandomHistory)
+
 module.exports = router
