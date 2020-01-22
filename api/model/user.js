@@ -43,9 +43,13 @@ function getUserFromId(userid, callback, conn) {
 
 function getUsers(range, callback, conn) {
   conn = conn || database.getPool()
-  const start = parseInt(range.start)
-  const end = parseInt(range.end)
-  conn.query('SELECT * FROM `users` limit ?,?;', [start - 1, end - start + 1], function(err, results, fields) {
+  let start=1,end=999999;
+  if(range.start && range.start > 0)
+    start = parseInt(range.start);
+  if(range.end)
+    end = parseInt(range.end);
+
+  conn.query('SELECT * FROM `users` LIMIT ?,?;', [start - 1, end - start + 1], function(err, results, fields) {
     if (err) {
       callback(err)
       return
