@@ -69,4 +69,12 @@ function clearRandomHistory(req, res) {
   })
 }
 
-module.exports = { ping, editUser, getUsers, queryUser, getStat, randomizeUser, getRandomHistory , clearRandomHistory };
+function deleteUser(req, res) {
+  let id = req.query.id
+  user.deleteUser(id, function(err) {
+    if (err) throw err
+    res.sendStatus(200)
+  })
+}
+
+module.exports = { ping, editUser, getUsers, queryUser, getStat, randomizeUser, getRandomHistory , clearRandomHistory, deleteUser}

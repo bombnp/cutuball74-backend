@@ -54,4 +54,6 @@ router.get('/admin/randomhistory', passport.authenticate('jwt', { session: false
 
 router.delete('/admin/clearhistory', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.clearRandomHistory)
 
+router.delete('/admin/delete', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.deleteUser)
+
 module.exports = router
