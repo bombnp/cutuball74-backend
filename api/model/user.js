@@ -93,4 +93,16 @@ function getStat(callback, conn) {
   })
 }
 
-module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser, getStat }
+function deleteUser(id, callback, conn) {
+  conn = conn || database.getPool()
+  q = 'DELETE FROM `users` WHERE `id` = ?;'
+  conn.query(q, id, function(err, results, fields) {
+    if (err) {
+      callback(err)
+      return
+    }
+    callback(null)
+  })
+}
+
+module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser, getStat, deleteUser }

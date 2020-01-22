@@ -48,4 +48,6 @@ router.get('/admin/query', passport.authenticate('jwt', { session: false }), aut
 
 router.get('/admin/getstat', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.getStat)
 
+router.delete('/admin/delete', passport.authenticate('jwt', { session: false }), auth.checkAdminStatus, admin.deleteUser)
+
 module.exports = router
