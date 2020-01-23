@@ -76,18 +76,12 @@
 
 | field | Type | Description |  
 | ----------- | ----------- | ----------- |  
-| `QRtoken` | `string` | สำหรับตรวจสอบว่าได้สแกน QR หรือเปล่า |
-
-#### Response JSON
-
-| field | Type | Description |  
-| ----------- | ----------- | ----------- |  
-| `number` | `int` | เลขคิว |  
-| `name` | `string` | ชื่อ |
+| `id` | `string` | เลขบัตรประชาชนของคนที่ถูกแสกน |
 
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
+| `400` | ไม่พบเลขบัตรประชาชนใน database |
 | `401` | ไม่มี token หรือ token หมดอายุ |  
 
 ## /api/getticket

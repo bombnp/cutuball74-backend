@@ -7,7 +7,8 @@ function userFromRow(row) {
     email: row.email,
     faculty: row.faculty,
     tel: row.tel,
-    number: row.number
+    number: row.number,
+    role: row.role
   }
 }
 
@@ -48,7 +49,7 @@ function getUsers(range, callback, conn) {
   if (range.start && range.start > 0) start = parseInt(range.start)
   if (range.end) end = parseInt(range.end)
 
-  conn.query('SELECT * FROM `users` LIMIT ?,?;', [start - 1, end - start + 1], function(err, results, fields) {
+  conn.query('SELECT * FROM `users` LIMIT ?,?;', [start, end - start], function(err, results, fields) {
     if (err) {
       callback(err)
       return
