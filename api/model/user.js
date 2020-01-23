@@ -7,7 +7,8 @@ function userFromRow(row) {
     email: row.email,
     faculty: row.faculty,
     tel: row.tel,
-    number: row.number
+    number: row.number,
+    role: row.role
   }
 }
 
