@@ -44,7 +44,7 @@ function getUserFromId(userid, callback, conn) {
 
 function getUsers(range, callback, conn) {
   conn = conn || database.getPool()
-  let start = 1,
+  let start = 0,
     end = 999999
   if (range.start && range.start > 0) start = parseInt(range.start)
   if (range.end) end = parseInt(range.end)
