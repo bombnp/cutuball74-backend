@@ -69,8 +69,14 @@ authServer.exchange(
 
 function checkAdminStatus(req, res, next) {
   let user = req.user
-  if (user.id != 'admin') handleError(res, 403, 'NOTADMIN', 'User is not admin')
+  if (user.role != 'admin') handleError(res, 403, 'NOTADMIN', 'User is not admin')
   else next()
 }
 
-module.exports = { authServer, jwtStrategy, checkAdminStatus }
+function checkStaffStatus(req, res, next) {
+  let user = req.user
+  if (user.role != 'staff') handleError(res, 403, 'NOTSTAFF', 'User is not staff')
+  else next()
+}
+
+module.exports = { authServer, jwtStrategy, checkAdminStatus, checkStaffStatus }
