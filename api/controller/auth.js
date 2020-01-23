@@ -5,7 +5,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 
 const user = require('../model/user.js')
 const config = require('../config.js')
-const { handleError } = require('../util/validation.js')
+const { handleError } = require('./error.js')
 
 /** Common Config for JWTToken
  */
@@ -75,7 +75,7 @@ function checkAdminStatus(req, res, next) {
 
 function checkStaffStatus(req, res, next) {
   let user = req.user
-  if (user.role != 'staff') handleError(res, 403, 'NOTSTAFF', 'User is not staff')
+  if (user.role != 'staff' || user.role != 'admin') handleError(res, 403, 'NOTSTAFF', 'User is not staff')
   else next()
 }
 
