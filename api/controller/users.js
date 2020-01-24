@@ -46,4 +46,18 @@ function register(req, res) {
   })
 }
 
-module.exports = { getUser, register, userJsonToUserObj }
+function checkin(req, res) {
+  let data = req.body
+  user.checkin(data, function(err) {
+    if (err) {
+      if (err.desc == 'NOID') {
+        handleError(res, 400, 'NOID', "ID doesn't not exists")
+        return
+      }
+      throw err
+    }
+    res.sendStatus(200)
+  })
+}
+
+module.exports = { getUser, register, userJsonToUserObj, checkin }

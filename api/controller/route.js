@@ -18,8 +18,7 @@ router.options('*', cors())
 
 // Enable Bodyparser Middleware for all routes
 router.use(bodyParser.urlencoded({ extended: false }))
-router.use(error.safeBodyParserJson);
-
+router.use(error.safeBodyParserJson)
 
 // ROUTE / Welcome page
 router.get('/', (req, res) => {
@@ -34,13 +33,13 @@ passport.use(auth.jwtStrategy)
 router.post('/register', error.safeBodyParserJson, users.register)
 
 // All routes below will require jwt to access
-router.use(passport.authenticate('jwt', { session: false }));
+router.use(passport.authenticate('jwt', { session: false }))
 
 // Check admin permissions for all admin endpoints
-router.use('/admin/*', auth.checkAdminStatus);
+router.use('/admin/*', auth.checkAdminStatus)
 
 // Check staff permissions for all staff endpoints
-router.use('/staff/*', auth.checkStaffStatus);
+router.use('/staff/*', auth.checkStaffStatus)
 
 // -----------------------------------------------------
 
@@ -63,5 +62,7 @@ router.get('/admin/randomhistory', admin.getRandomHistory)
 router.delete('/admin/clearhistory', admin.clearRandomHistory)
 
 router.delete('/admin/delete', admin.deleteUser)
+
+router.post('/staff/checkin', users.checkin)
 
 module.exports = router

@@ -194,4 +194,28 @@ function deleteUser(id, callback, conn) {
   })
 }
 
-module.exports = { getUserFromId, getUsers, saveUserToDb, queryUser, getStat, randomizeUser, clearRandomHistory, getRandomHistory, deleteUser }
+function checkin(data, callback, conn) {
+  conn = conn || database.getPool()
+  q = 'INSERT INTO checkedin_users (id) SELECT id FROM users WHERE `id` = ?;'
+  conn.query(q, [data.id], function(err, results, fields) {
+    if (err) {
+      callback(err)
+      return
+    }
+    if (!results.affectedRows) callback({ desc: 'NOID' })
+    else callback(null)
+  })
+}
+
+module.exports = {
+  getUserFromId,
+  getUsers,
+  saveUserToDb,
+  queryUser,
+  getStat,
+  randomizeUser,
+  clearRandomHistory,
+  getRandomHistory,
+  deleteUser,
+  checkin
+}
