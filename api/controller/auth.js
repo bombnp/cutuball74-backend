@@ -75,7 +75,7 @@ function checkAdminStatus(req, res, next) {
 
 function checkStaffStatus(req, res, next) {
   let user = req.user
-  if (user.role != 'staff' || user.role != 'admin') handleError(res, 403, 'NOTSTAFF', 'User is not staff')
+  if (user.role != 'staff' && user.role != 'admin') handleError(res, 403, 'NOTSTAFF', 'User is not staff')
   else next()
 }
 
