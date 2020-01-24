@@ -8,7 +8,9 @@ function userFromRow(row) {
     faculty: row.faculty,
     tel: row.tel,
     number: row.number,
-    role: row.role
+    role: row.role,
+    created: row.createdAt,
+    modified: row.modifiedAt
   }
 }
 
@@ -44,25 +46,28 @@ function getUserFromId(userid, callback, conn) {
 
 function getUsers(data, callback, conn) {
   conn = conn || database.getPool()
-  let start = 0, end = 999999
+  let start = 0,
+    end = 999999
   if (data.start && data.start >= 0) start = parseInt(data.start)
   if (data.end) end = parseInt(data.end)
   if (!data.value) data.value = ''
   let value = '%' + data.value + '%'
-  let q1 = 'SELECT * FROM `users` WHERE id <> "admin" AND id <> "staff" AND (id like ? OR name like ? OR email like ? OR tel like ?) LIMIT ?,?;'
+  let q1 =
+    'SELECT * FROM `users` WHERE role <> "admin" AND role <> "staff" AND (id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY `createdAt` DESC LIMIT ?,?;'
   conn.query(q1, [value, value, value, value, start, end - start], function(err, results, fields) {
     if (err) {
       callback(err)
       return
     }
     let users = results.map(userFromRow)
-    let q2 = 'SELECT COUNT(*) AS users_count FROM `users` WHERE id <> "admin" AND id <> "staff"';
-    conn.query(q2, function(err, results, fields) {
-      if(err) {
-        callback(err);
-        return;
+    let q2 =
+      'SELECT COUNT(*) AS users_count FROM `users` WHERE role <> "admin" AND role <> "staff" AND (id like ? OR name like ? OR email like ? OR tel like ?)'
+    conn.query(q2, [value, value, value, value], function(err, results, fields) {
+      if (err) {
+        callback(err)
+        return
       }
-      let users_count = results[0].users_count;
+      let users_count = results[0].users_count
       callback(null, {
         users: users,
         users_count: users_count
@@ -106,7 +111,8 @@ function queryUser(data, callback, conn) {
 
 function getStat(callback, conn) {
   conn = conn || database.getPool()
-  q = 'SELECT(SELECT COUNT(*) FROM `users`) AS `regist`,(SELECT COUNT(*) FROM `checkedin_users`) AS `checkedin`;'
+  q =
+    'SELECT(SELECT COUNT(*) FROM `users` WHERE role <> "admin" AND role <> "staff") AS `regist`,(SELECT COUNT(*) FROM `checkedin_users`) AS `checkedin`;'
   conn.query(q, [], function(err, results, fields) {
     if (err) {
       callback(err)
