@@ -48,6 +48,7 @@ function getUsers(data, callback, conn) {
     end = 999999
   if (data.start && data.start > 0) start = parseInt(data.start)
   if (data.end) end = parseInt(data.end)
+  if (!data.value) data.value = ''
   let value = '%' + data.value + '%'
   let q = 'SELECT * FROM `users` WHERE (id like ? or name like ? or email like ? or tel like ?) LIMIT ?,?;'
   conn.query(q, [value, value, value, value, start, end - start], function(err, results, fields) {
