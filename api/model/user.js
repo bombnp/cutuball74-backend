@@ -16,8 +16,8 @@ function userFromRow(row) {
 
 function ticketFromRow(row) {
   return {
-    name: row.name,
-    number: row.number
+    number: row.number,
+    name: row.name
   }
 }
 
@@ -101,7 +101,7 @@ function queryUser(data, callback, conn) {
   let value = '%' + data.value + '%'
   conn.query(q, [data.column, value], function(err, results, fields) {
     if (err) {
-      callback(err)
+      callback(err, null)
       return
     }
     users = results.map(userFromRow)
@@ -115,7 +115,7 @@ function getStat(callback, conn) {
     'SELECT(SELECT COUNT(*) FROM `users` WHERE role <> "admin" AND role <> "staff") AS `regist`,(SELECT COUNT(*) FROM `checkedin_users`) AS `checkedin`;'
   conn.query(q, [], function(err, results, fields) {
     if (err) {
-      callback(err)
+      callback(err, null)
       return
     }
     stat = { regist: results[0].regist, checkin: results[0].checkedin }
@@ -202,8 +202,24 @@ function checkin(data, callback, conn) {
       callback(err)
       return
     }
-    if (!results.affectedRows) callback({ desc: 'NOID' })
+    if (!results.affectedRows) callback({ code: 'NOID' })
     else callback(null)
+  })
+}
+
+function getticket(id, callback, conn) {
+  conn = conn || database.getPool()
+  q = 'SELECT checkedin_users.number,users.name FROM users INNER JOIN checkedin_users ON users.id=checkedin_users.id WHERE users.id = ?;'
+  conn.query(q, [id], function(err, results, fields) {
+    if (err) {
+      callback(err)
+      return
+    }
+    if (!results.length) callback({ code: 'NOCHKIN' }, null)
+    else {
+      data = results.map(ticketFromRow)
+      callback(null, data)
+    }
   })
 }
 
@@ -217,5 +233,6 @@ module.exports = {
   clearRandomHistory,
   getRandomHistory,
   deleteUser,
-  checkin
+  checkin,
+  getticket
 }

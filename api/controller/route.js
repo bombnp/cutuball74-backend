@@ -45,6 +45,10 @@ router.use('/staff/*', auth.checkStaffStatus)
 
 router.get('/getuser', users.getUser)
 
+router.get('/getticket', users.getticket)
+
+router.post('/staff/checkin', users.checkin)
+
 router.get('/admin/ping', admin.ping)
 
 router.put('/admin/edit', error.safeBodyParserJson, admin.editUser)
@@ -62,7 +66,5 @@ router.get('/admin/randomhistory', admin.getRandomHistory)
 router.delete('/admin/clearhistory', admin.clearRandomHistory)
 
 router.delete('/admin/delete', admin.deleteUser)
-
-router.post('/staff/checkin', users.checkin)
 
 module.exports = router

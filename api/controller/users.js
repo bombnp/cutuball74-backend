@@ -50,7 +50,7 @@ function checkin(req, res) {
   let data = req.body
   user.checkin(data, function(err) {
     if (err) {
-      if (err.desc == 'NOID') {
+      if (err.code == 'NOID') {
         handleError(res, 400, 'NOID', "ID doesn't not exist")
         return
       }
@@ -60,4 +60,18 @@ function checkin(req, res) {
   })
 }
 
-module.exports = { getUser, register, userJsonToUserObj, checkin }
+function getticket(req, res) {
+  let id = req.user.id
+  user.getticket(id, function(err, data) {
+    if (err) {
+      if (err.code == 'NOCHKIN') {
+        handleError(res, 403, 'NOCHKIN', "ID doesn't check in")
+        return
+      }
+      throw err
+    }
+    res.json(data)
+  })
+}
+
+module.exports = { getUser, register, userJsonToUserObj, checkin, getticket }
