@@ -42,14 +42,15 @@ function getUserFromId(userid, callback, conn) {
   })
 }
 
-function getUsers(range, callback, conn) {
+function getUsers(data, callback, conn) {
   conn = conn || database.getPool()
   let start = 0,
     end = 999999
-  if (range.start && range.start > 0) start = parseInt(range.start)
-  if (range.end) end = parseInt(range.end)
-
-  conn.query('SELECT * FROM `users` LIMIT ?,?;', [start, end - start], function(err, results, fields) {
+  if (data.start && data.start > 0) start = parseInt(data.start)
+  if (data.end) end = parseInt(data.end)
+  let value = '%' + data.value + '%'
+  let q = 'SELECT * FROM `users` WHERE (id like ? or name like ? or email like ? or tel like ?) LIMIT ?,?;'
+  conn.query(q, [value, value, value, value, start, end - start], function(err, results, fields) {
     if (err) {
       callback(err)
       return

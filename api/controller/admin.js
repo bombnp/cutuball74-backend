@@ -26,7 +26,7 @@ function editUser(req, res) {
   })
 }
 function getUsers(req, res) {
-  let data = { start: req.query.start, end: req.query.end }
+  let data = { start: req.query.start, end: req.query.end, value: req.query.value }
   user.getUsers(data, function(err, users) {
     if (err) throw err
     res.json(users)
@@ -35,9 +35,9 @@ function getUsers(req, res) {
 
 function queryUser(req, res) {
   let data = { column: req.query.column, value: req.query.value }
-  if(!data.column || !data.value){
-    handleError(res, 400, 'NOPARAM', "Can't query without column and value");
-    return;
+  if (!data.column || !data.value) {
+    handleError(res, 400, 'NOPARAM', "Can't query without column and value")
+    return
   }
   user.queryUser(data, function(err, users) {
     if (err) throw err
@@ -54,31 +54,30 @@ function getStat(req, res) {
 
 function randomizeUser(req, res) {
   user.randomizeUser(function(err, ticket) {
-    if(err) throw err;
-    res.json(ticket);
+    if (err) throw err
+    res.json(ticket)
   })
 }
 
 function getRandomHistory(req, res) {
   user.getRandomHistory(function(err, tickets) {
-    if(err) throw err;
-    res.json(tickets);
+    if (err) throw err
+    res.json(tickets)
   })
 }
 
 function clearRandomHistory(req, res) {
   user.clearRandomHistory(function(err) {
-    if(err) throw err;
-    res.sendStatus(200);
+    if (err) throw err
+    res.sendStatus(200)
   })
 }
 
 function deleteUser(req, res) {
   let id = req.query.id
-  if(!id)
-  {
+  if (!id) {
     handleError(res, 400, 'NOPARAM', "Can't delete without ID")
-    return;
+    return
   }
   user.deleteUser(id, function(err) {
     if (err) throw err
@@ -86,4 +85,4 @@ function deleteUser(req, res) {
   })
 }
 
-module.exports = { ping, editUser, getUsers, queryUser, getStat, randomizeUser, getRandomHistory , clearRandomHistory, deleteUser}
+module.exports = { ping, editUser, getUsers, queryUser, getStat, randomizeUser, getRandomHistory, clearRandomHistory, deleteUser }
