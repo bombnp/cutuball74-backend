@@ -44,20 +44,30 @@ function getUserFromId(userid, callback, conn) {
 
 function getUsers(data, callback, conn) {
   conn = conn || database.getPool()
-  let start = 0,
-    end = 999999
-  if (data.start && data.start > 0) start = parseInt(data.start)
+  let start = 0, end = 999999
+  if (data.start && data.start >= 0) start = parseInt(data.start)
   if (data.end) end = parseInt(data.end)
   if (!data.value) data.value = ''
   let value = '%' + data.value + '%'
-  let q = 'SELECT * FROM `users` WHERE (id like ? or name like ? or email like ? or tel like ?) LIMIT ?,?;'
-  conn.query(q, [value, value, value, value, start, end - start], function(err, results, fields) {
+  let q1 = 'SELECT * FROM `users` WHERE id <> "admin" AND id <> "staff" AND (id like ? OR name like ? OR email like ? OR tel like ?) LIMIT ?,?;'
+  conn.query(q1, [value, value, value, value, start, end - start], function(err, results, fields) {
     if (err) {
       callback(err)
       return
     }
-    users = results.map(userFromRow)
-    callback(null, users)
+    let users = results.map(userFromRow)
+    let q2 = 'SELECT COUNT(*) AS users_count FROM `users` WHERE id <> "admin" AND id <> "staff"';
+    conn.query(q2, function(err, results, fields) {
+      if(err) {
+        callback(err);
+        return;
+      }
+      let users_count = results[0].users_count;
+      callback(null, {
+        users: users,
+        users_count: users_count
+      })
+    })
   })
 }
 
