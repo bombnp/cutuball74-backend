@@ -51,7 +51,7 @@ function checkin(req, res) {
   user.checkin(data, function(err) {
     if (err) {
       if (err.desc == 'NOID') {
-        handleError(res, 400, 'NOID', "ID doesn't not exists")
+        handleError(res, 400, 'NOID', "ID doesn't not exist")
         return
       }
       throw err
