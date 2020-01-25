@@ -36,7 +36,7 @@ function getUsers(req, res) {
   user.getUsers(data, function(err, users) {
     if (err) {
       handleError(res, 500, err.code, err.sqlMessage)
-      return;
+      return
     }
     res.json(users)
   })
@@ -46,7 +46,7 @@ function getStat(req, res) {
   user.getStat(function(err, stat) {
     if (err) {
       handleError(res, 500, err.code, err.sqlMessage)
-      return;
+      return
     }
     res.json(stat)
   })
@@ -55,12 +55,12 @@ function getStat(req, res) {
 function randomizeUser(req, res) {
   user.randomizeUser(function(err, ticket) {
     if (err) {
-      if(err.code == "NO_MORE_USER") {
-        handleError(res, 400, err.code, "No more user left to randomize")
-        return;
+      if (err.code == 'NO_MORE_USER') {
+        handleError(res, 400, err.code, 'No more user left to randomize')
+        return
       }
       handleError(res, 500, err.code, err.sqlMessage)
-      return;
+      return
     }
     res.json(ticket)
   })
@@ -70,7 +70,7 @@ function getRandomHistory(req, res) {
   user.getRandomHistory(function(err, tickets) {
     if (err) {
       handleError(res, 500, err.code, err.sqlMessage)
-      return;
+      return
     }
     res.json(tickets)
   })
@@ -80,7 +80,7 @@ function clearRandomHistory(req, res) {
   user.clearRandomHistory(function(err) {
     if (err) {
       handleError(res, 500, err.code, err.sqlMessage)
-      return;
+      return
     }
     res.sendStatus(200)
   })
@@ -95,7 +95,7 @@ function deleteUser(req, res) {
   user.deleteUser(id, function(err) {
     if (err) {
       handleError(res, 500, err.code, err.sqlMessage)
-      return;
+      return
     }
     res.sendStatus(200)
   })

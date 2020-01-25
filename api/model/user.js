@@ -150,8 +150,8 @@ function randomizeUser(callback, conn) {
     }
 
     if (results[0].checkedin_count == results[0].selected_count) {
-      callback({ code: "NO_MORE_USER" });
-      return;
+      callback({ code: 'NO_MORE_USER' })
+      return
     }
 
     // select unselected users
@@ -182,7 +182,7 @@ function randomizeUser(callback, conn) {
 function getRandomHistory(callback, conn) {
   conn = conn || database.getPool()
 
-  q = 'SELECT number, name FROM selected_users;'
+  q = 'SELECT number, name FROM selected_users ORDER BY selectedAt;'
   conn.query(q, function(err, results, fields) {
     if (err) {
       callback(err)
