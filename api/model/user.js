@@ -194,7 +194,7 @@ function deleteUser(id, callback, conn) {
   })
 }
 
-function checkin(data, callback, conn) {
+function checkIn(data, callback, conn) {
   conn = conn || database.getPool()
   q = 'INSERT INTO checkedin_users (id) SELECT id FROM users WHERE `id` = ?;'
   conn.query(q, [data.id], function(err, results, fields) {
@@ -207,7 +207,7 @@ function checkin(data, callback, conn) {
   })
 }
 
-function getticket(id, callback, conn) {
+function getTicket(id, callback, conn) {
   conn = conn || database.getPool()
   q = 'SELECT checkedin_users.number,users.name FROM users INNER JOIN checkedin_users ON users.id=checkedin_users.id WHERE users.id = ?;'
   conn.query(q, [id], function(err, results, fields) {
@@ -233,6 +233,6 @@ module.exports = {
   clearRandomHistory,
   getRandomHistory,
   deleteUser,
-  checkin,
-  getticket
+  checkIn,
+  getTicket
 }

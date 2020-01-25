@@ -45,9 +45,9 @@ router.use('/staff/*', auth.checkStaffStatus)
 
 router.get('/getuser', users.getUser)
 
-router.get('/getticket', users.getticket)
+router.get('/getticket', users.getTicket)
 
-router.post('/staff/checkin', users.checkin)
+router.post('/staff/checkin', users.checkIn)
 
 router.get('/admin/ping', admin.ping)
 

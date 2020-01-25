@@ -46,9 +46,12 @@ function register(req, res) {
   })
 }
 
-function checkin(req, res) {
+function checkIn(req, res) {
   let data = req.body
-  user.checkin(data, function(err) {
+  if(data.id == null) {
+    handleError(res, 400, 'NOID')
+  }
+  user.checkIn(data, function(err) {
     if (err) {
       if (err.code == 'NOID') {
         handleError(res, 400, 'NOID', "ID doesn't not exist")
@@ -60,12 +63,12 @@ function checkin(req, res) {
   })
 }
 
-function getticket(req, res) {
+function getTicket(req, res) {
   let id = req.user.id
-  user.getticket(id, function(err, data) {
+  user.getTicket(id, function(err, data) {
     if (err) {
       if (err.code == 'NOCHKIN') {
-        handleError(res, 403, 'NOCHKIN', "ID doesn't check in")
+        handleError(res, 403, 'NOCHKIN', "ID haven't checked in")
         return
       }
       throw err
@@ -74,4 +77,4 @@ function getticket(req, res) {
   })
 }
 
-module.exports = { getUser, register, userJsonToUserObj, checkin, getticket }
+module.exports = { getUser, register, userJsonToUserObj, checkIn, getTicket }
