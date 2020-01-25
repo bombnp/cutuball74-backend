@@ -48,7 +48,7 @@ function register(req, res) {
 
 function checkIn(req, res) {
   let data = req.body
-  if(data.id == null) {
+  if (data.id == null) {
     handleError(res, 400, 'NOID')
   }
   user.checkIn(data, function(err) {
@@ -56,9 +56,12 @@ function checkIn(req, res) {
       if (err.code == 'NOID') {
         handleError(res, 400, 'NOID', "ID doesn't not exist")
         return
+      } else if (err.code == 'ER_DUP_ENTRY') {
+        handleError(res, 409, 'DUPID', 'User ID already checked in')
+        return
       }
-      handleError(res, 500, err.code, err.sqlMessage);
-      return;
+      handleError(res, 500, err.code, err.sqlMessage)
+      return
     }
     res.sendStatus(200)
   })
@@ -74,7 +77,7 @@ function getTicket(req, res) {
       }
       throw err
     }
-    res.json(data)
+    res.send(data)
   })
 }
 

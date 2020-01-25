@@ -9,8 +9,9 @@ function userFromRow(row) {
     tel: row.tel,
     number: row.number,
     role: row.role,
-    created: row.createdAt,
-    modified: row.modifiedAt
+    createdAt: row.createdAt,
+    modifiedAt: row.modifiedAt,
+    checkedinAt: row.checkedinAt
   }
 }
 
@@ -51,29 +52,57 @@ function getUsers(data, callback, conn) {
   if (data.start && data.start >= 0) start = parseInt(data.start)
   if (data.end) end = parseInt(data.end)
   if (!data.value) data.value = ''
+  if (!data.checkedin) data.checkedin = false
+  else data.checkedin = true
+  let checkedin = data.checkedin
   let value = '%' + data.value + '%'
-  let q1 =
-    'SELECT * FROM `users` WHERE role <> "admin" AND role <> "staff" AND (id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY `createdAt` DESC LIMIT ?,?;'
-  conn.query(q1, [value, value, value, value, start, end - start], function(err, results, fields) {
-    if (err) {
-      callback(err)
-      return
-    }
-    let users = results.map(userFromRow)
-    let q2 =
-      'SELECT COUNT(*) AS users_count FROM `users` WHERE role <> "admin" AND role <> "staff" AND (id like ? OR name like ? OR email like ? OR tel like ?)'
-    conn.query(q2, [value, value, value, value], function(err, results, fields) {
+  if (!checkedin) {
+    let q1 =
+      'SELECT checkedin_users.number,users.id,name,email,faculty,tel,createdAt,modifiedAt,checkedin_users.checkedinAt FROM users LEFT JOIN checkedin_users ON users.id=checkedin_users.id WHERE users.role <> "admin" AND users.role <> "staff" AND (users.id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY createdAt DESC LIMIT ?,?;'
+    conn.query(q1, [value, value, value, value, start, end - start], function(err, results, fields) {
       if (err) {
         callback(err)
         return
       }
-      let users_count = results[0].users_count
-      callback(null, {
-        users: users,
-        users_count: users_count
+      let users = results.map(userFromRow)
+      let q2 =
+        'SELECT COUNT(*) AS users_count FROM `users` LEFT JOIN checkedin_users ON users.id=checkedin_users.id WHERE role <> "admin" AND role <> "staff" AND (users.id like ? OR name like ? OR email like ? OR tel like ?)'
+      conn.query(q2, [value, value, value, value], function(err, results, fields) {
+        if (err) {
+          callback(err)
+          return
+        }
+        let users_count = results[0].users_count
+        callback(null, {
+          users: users,
+          users_count: users_count
+        })
       })
     })
-  })
+  } else {
+    let q1 =
+      'SELECT checkedin_users.number,users.id,name,email,faculty,tel,createdAt,modifiedAt,checkedin_users.checkedinAt FROM users INNER JOIN checkedin_users ON users.id=checkedin_users.id WHERE (users.id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY number LIMIT ?,?;'
+    conn.query(q1, [value, value, value, value, start, end - start], function(err, results, fields) {
+      if (err) {
+        callback(err)
+        return
+      }
+      let users = results.map(userFromRow)
+      let q2 =
+        'SELECT COUNT(*) AS checkedin_users_count FROM checkedin_users INNER JOIN users ON users.id=checkedin_users.id WHERE (users.id like ? OR users.name like ? OR users.email like ? OR users.tel like ?)'
+      conn.query(q2, [value, value, value, value], function(err, results, fields) {
+        if (err) {
+          callback(err)
+          return
+        }
+        let users_count = results[0].checkedin_users_count
+        callback(null, {
+          users: users,
+          users_count: users_count
+        })
+      })
+    })
+  }
 }
 
 /** Save user object to database
@@ -196,14 +225,30 @@ function deleteUser(id, callback, conn) {
 
 function checkIn(data, callback, conn) {
   conn = conn || database.getPool()
-  q = 'INSERT INTO checkedin_users (id) SELECT id FROM users WHERE `id` = ?;'
-  conn.query(q, [data.id], function(err, results, fields) {
+  q1 = 'SELECT COUNT(*) AS found FROM users WHERE id = ?;'
+  conn.query(q1, [data.id], function(err, results, fields) {
     if (err) {
       callback(err)
       return
     }
-    if (!results.affectedRows) callback({ code: 'NOID' })
-    else callback(null)
+    if (!results[0].found) callback({ code: 'NOID' })
+  })
+  q2 = 'SELECT COUNT(*) AS dup FROM checkedin_users WHERE id = ?;'
+  conn.query(q2, [data.id], function(err, results, fields) {
+    if (err) {
+      callback(err)
+      return
+    }
+    if (!results[0].dup) {
+      q3 = 'INSERT INTO checkedin_users (id) VALUE (?);'
+      conn.query(q3, [data.id], function(err, results, fields) {
+        if (err) {
+          callback(err)
+          return
+        }
+        callback(null)
+      })
+    } else callback({ code: 'ER_DUP_ENTRY' })
   })
 }
 

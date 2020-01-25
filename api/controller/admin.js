@@ -26,7 +26,12 @@ function editUser(req, res) {
   })
 }
 function getUsers(req, res) {
-  let data = { start: req.query.start, end: req.query.end, value: req.query.value }
+  let data = {
+    start: req.query.start,
+    end: req.query.end,
+    value: req.query.value,
+    checkedin: req.query.checkedin
+  }
   user.getUsers(data, function(err, users) {
     if (err) throw err
     res.json(users)
