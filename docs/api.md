@@ -3,11 +3,10 @@
 * [/api/register](#apiregister)
 * [/api/getuser](#apigetuser)
 ## [**Event day endpoints**](#eventdayendpoints)
-* [/api/checkin](#apicheckin)
+* [/api/staff/checkin](#apistaffcheckin)
 * [/api/getticket](#apigetticket)
 ## [**Admin endpoints**](#adminendpoints)
 * [/api/admin/getusers](#apiadmingetusers)
-* [/api/admin/query](#apiadminquery)
 * [/api/admin/random](#apiadminrandom)
 * [/api/admin/randomhistory](#apiadminrandomhistory)
 * [/api/admin/clearhistory](#apiadminclearhistory)
@@ -66,7 +65,7 @@
 | `401` | ไม่มี token หรือ token หมดอายุ |
 
 # **Event day endpoints**
-## /api/checkin
+## /api/staff/checkin
 ใช้สำหรับ checkin วันงาน
 #### Method: `POST`
 
@@ -103,7 +102,8 @@
  | status code | Description |  
 | ----------- | ----------- |  
 | `401` | ไม่มี token หรือ token หมดอายุ |  
-| `403` | user ยังไม่ได้ checkin |  
+| `403` | user ยังไม่ได้ checkin |
+| `409` | user checkin ไปแล้ว |
 
 # **Admin endpoints**
 ## /api/admin/getusers
@@ -117,12 +117,20 @@
 | `start` | `int` | เริ่มที่ record ที่เท่าไหร่ |
 | `end` | `int` | ถึง record ที่เท่าไหร่ |
 | `value` | `string` | ข้อมูลที่ต้องการค้นหา |
+| `checkedin` | `boolean` | ต้องการเฉพาะคนที่เช็คอินแล้วหรือไม่ |
 
 ถ้าใส่ค่า value มา จะทำการ query ก่อน แล้วจะเอาข้อมูลมาแสดงตาม start กับ end
 
 #### Response JSON
 
-`array` ของ `object` โดยแต่ละ object มีรูปแบบดังนี้
+เป็น `object` ที่มี 2 field 
+
+| field | Type | Description |  
+| ----------- | ----------- | ----------- | 
+| `users` | `object` | ข้อมูลของ user แต่ละคนที่ตรงตาม query ที่ limit จำนวนคนไว้ |
+| `users_count` | `int` | จำนวนของ user ทั้งหมดที่ตรงตาม query |
+
+ข้อมูลใน `users`
 
 | field | Type | Description |  
 | ----------- | ----------- | ----------- |  
@@ -132,44 +140,15 @@
 | `email` | `string` | email |  
 | `faculty` | `string` | รหัสคณะ |
 | `tel` | `string` | เบอร์โทรศัพท์ |
+| `createdAt` | `timestamp` | เวลาที่ลงทะเบียน |
+| `modifiedAt` | `timestamp` | เวลาที่ถูกแก้ไขล่าสุด |
+| `checkedinAt` | `timestamp` | เวลาที่เช็คอิน |
 
 
 #### Error
  | status code | Description |  
 | ----------- | ----------- |  
 | `400` | คำขอผิดรูปแบบ เช่น end ก่อน start |
-| `401` | ไม่มี token หรือ token หมดอายุ |
-
-## /api/admin/query
-ใช้สำหรับ query ข้อมูล
-#### Method: `GET`
-
-#### Request Parameter:
-
-| Parameter | Type | Description |  
-| ----------- | ----------- | ----------- |  
-| `column` | `string` | ชื่อ column ที่ต้องการ search(filter) |
-| `value` | `int` | ค่าที่ต้องการ search |
-
-ไม่จำเป็นต้องใส่ค่า value ให้ถูกต้องทุกตัว เพียงแค่มีบางส่วนก็ query เจอ
-
-#### Response JSON
-
-ข้อมูลของผู้ใช้ทุกคนที่ตรงตาม query เป็น `array` ของ `object` โดยแต่ละ object มีรูปแบบดังนี้
-
-| field | Type | Description |  
-| ----------- | ----------- | ----------- |  
-| `number` | `int` | เลขคิว |  
-| `ID` | `string` | บัตรประชาชน |  
-| `name` | `string` | ชื่อ |
-| `email` | `string` | email |  
-| `faculty` | `string` | รหัสคณะ |
-| `tel` | `string` | เบอร์โทรศัพท์ |
-
-
-#### Error
- | status code | Description |  
-| ----------- | ----------- |  
 | `401` | ไม่มี token หรือ token หมดอายุ |
 
 ## /api/admin/random
