@@ -57,7 +57,8 @@ function checkIn(req, res) {
         handleError(res, 400, 'NOID', "ID doesn't not exist")
         return
       }
-      throw err
+      handleError(res, 500, err.code, err.sqlMessage);
+      return;
     }
     res.sendStatus(200)
   })
