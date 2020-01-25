@@ -14,7 +14,7 @@ function userFromRow(row) {
   }
 }
 
-function ticketFromRow(roww) {
+function ticketFromRow(row) {
   return {
     number: row.number,
     name: row.name
