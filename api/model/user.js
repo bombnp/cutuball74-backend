@@ -182,7 +182,7 @@ function randomizeUser(callback, conn) {
 function getRandomHistory(callback, conn) {
   conn = conn || database.getPool()
 
-  q = 'SELECT selected_users.number, users.name FROM selected_users INNER JOIN users WHERE selected_users.id = users.id ORDER BY selectedAt;'
+  q = 'SELECT selected_users.number, users.name FROM selected_users INNER JOIN users WHERE selected_users.id = users.id ORDER BY selectedAt DESC;'
   conn.query(q, function(err, results, fields) {
     if (err) {
       callback(err)
