@@ -38,7 +38,8 @@ function register(req, res) {
           handleError(res, 409, 'DUPID', 'User ID already exists')
           return
         }
-        throw err
+        handleError(res, 500, err.code, err.sqlMessage)
+        return
       }
 
       res.sendStatus(200)
@@ -75,7 +76,12 @@ function getTicket(req, res) {
         handleError(res, 403, 'NOCHKIN', "ID haven't checked in")
         return
       }
-      throw err
+      if (err.code == 'ER_DUP_ENTRY') {
+        handleError(res, 409, 'DUPID', 'User ID already checked in')
+        return
+      }
+      handleError(res, 500, err.code, err.sqlMessage)
+      return
     }
     res.send(data)
   })

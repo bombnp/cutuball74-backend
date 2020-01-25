@@ -16,7 +16,8 @@ function editUser(req, res) {
       userJsonToUserObj(data),
       function(err) {
         if (err) {
-          throw err
+          handleError(res, 500, err.code, err.sqlMessage)
+          return
         }
         res.sendStatus(200)
       },
@@ -33,47 +34,50 @@ function getUsers(req, res) {
     checkedin: req.query.checkedin
   }
   user.getUsers(data, function(err, users) {
-    if (err) throw err
-    res.json(users)
-  })
-}
-
-function queryUser(req, res) {
-  let data = { column: req.query.column, value: req.query.value }
-  if (!data.column || !data.value) {
-    handleError(res, 400, 'NOPARAM', "Can't query without column and value")
-    return
-  }
-  user.queryUser(data, function(err, users) {
-    if (err) throw err
+    if (err) {
+      handleError(res, 500, err.code, err.sqlMessage)
+      return;
+    }
     res.json(users)
   })
 }
 
 function getStat(req, res) {
   user.getStat(function(err, stat) {
-    if (err) throw err
+    if (err) {
+      handleError(res, 500, err.code, err.sqlMessage)
+      return;
+    }
     res.json(stat)
   })
 }
 
 function randomizeUser(req, res) {
   user.randomizeUser(function(err, ticket) {
-    if (err) throw err
+    if (err) {
+      handleError(res, 500, err.code, err.sqlMessage)
+      return;
+    }
     res.json(ticket)
   })
 }
 
 function getRandomHistory(req, res) {
   user.getRandomHistory(function(err, tickets) {
-    if (err) throw err
+    if (err) {
+      handleError(res, 500, err.code, err.sqlMessage)
+      return;
+    }
     res.json(tickets)
   })
 }
 
 function clearRandomHistory(req, res) {
   user.clearRandomHistory(function(err) {
-    if (err) throw err
+    if (err) {
+      handleError(res, 500, err.code, err.sqlMessage)
+      return;
+    }
     res.sendStatus(200)
   })
 }
@@ -85,7 +89,10 @@ function deleteUser(req, res) {
     return
   }
   user.deleteUser(id, function(err) {
-    if (err) throw err
+    if (err) {
+      handleError(res, 500, err.code, err.sqlMessage)
+      return;
+    }
     res.sendStatus(200)
   })
 }
