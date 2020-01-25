@@ -58,7 +58,7 @@ function getUsers(data, callback, conn) {
   let value = '%' + data.value + '%'
   if (!checkedin) {
     let q1 =
-      'SELECT checkedin_users.number,users.id,name,email,faculty,tel,createdAt,modifiedAt,checkedin_users.checkedinAt FROM users LEFT JOIN checkedin_users ON users.id=checkedin_users.id WHERE users.role <> "admin" AND users.role <> "staff" AND (users.id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY createdAt DESC LIMIT ?,?;'
+      'SELECT checkedin_users.number,users.id,name,email,faculty,tel,createdAt,modifiedAt,checkedin_users.checkedinAt FROM users LEFT JOIN checkedin_users ON users.id=checkedin_users.id WHERE users.role <> "admin" AND users.role <> "staff" AND (users.id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY createdAt ASC LIMIT ?,?;'
     conn.query(q1, [value, value, value, value, start, end - start], function(err, results, fields) {
       if (err) {
         callback(err)
@@ -81,7 +81,7 @@ function getUsers(data, callback, conn) {
     })
   } else {
     let q1 =
-      'SELECT checkedin_users.number,users.id,name,email,faculty,tel,createdAt,modifiedAt,checkedin_users.checkedinAt FROM users INNER JOIN checkedin_users ON users.id=checkedin_users.id WHERE (users.id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY number LIMIT ?,?;'
+      'SELECT checkedin_users.number,users.id,name,email,faculty,tel,createdAt,modifiedAt,checkedin_users.checkedinAt FROM users INNER JOIN checkedin_users ON users.id=checkedin_users.id WHERE (users.id like ? OR name like ? OR email like ? OR tel like ?) ORDER BY number ASC LIMIT ?,?;'
     conn.query(q1, [value, value, value, value, start, end - start], function(err, results, fields) {
       if (err) {
         callback(err)
