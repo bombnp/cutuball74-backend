@@ -156,18 +156,18 @@ function randomizeUser(callback, conn) {
 
     // select unselected users
     q2 =
-      'SELECT checkedin_users.id, checkedin_users.name, checkedin_users.email, checkedin_users.faculty, checkedin_users.tel, checkedin_users.number FROM checkedin_users LEFT JOIN selected_users ON checkedin_users.number = selected_users.number WHERE selected_users.number IS NULL LIMIT 1 OFFSET ?;'
+      'SELECT checkedin_users.number, checkedin_users.id, users.name FROM checkedin_users LEFT JOIN selected_users ON checkedin_users.number = selected_users.number INNER JOIN users ON checkedin_users.id = users.id WHERE selected_users.number IS NULL LIMIT 1 OFFSET ?;'
     conn.query(q2, [Math.floor(Math.random() * (results[0].checkedin_count - results[0].selected_count))], function(err, results, fields) {
       if (err) {
         callback(err)
         return
       }
 
-      users = results.map(userFromRow)
+      user = results.map(userFromRow)[0]
       ticket = results.map(ticketFromRow)[0]
 
-      q3 = 'INSERT INTO selected_users (id, name, email, faculty, tel, number) VALUES (?, ?, ?, ?, ?, ?);'
-      conn.query(q3, [users[0].id, users[0].name, users[0].email, users[0].faculty, users[0].tel, users[0].number], function(err, results, fields) {
+      q3 = 'INSERT INTO selected_users (number, id) VALUES (?, ?);'
+      conn.query(q3, [user.number, user.id], function(err, results, fields) {
         if (err) {
           callback(err)
           return
@@ -182,7 +182,7 @@ function randomizeUser(callback, conn) {
 function getRandomHistory(callback, conn) {
   conn = conn || database.getPool()
 
-  q = 'SELECT number, name FROM selected_users ORDER BY selectedAt;'
+  q = 'SELECT selected_users.number, users.name FROM selected_users INNER JOIN users WHERE selected_users.id = users.id ORDER BY selectedAt;'
   conn.query(q, function(err, results, fields) {
     if (err) {
       callback(err)
