@@ -8,6 +8,7 @@ function userFromRow(row) {
     faculty: row.faculty,
     tel: row.tel,
     number: row.number,
+    role: row.role,
     createdAt: row.createdAt,
     modifiedAt: row.modifiedAt,
     checkedinAt: row.checkedinAt
