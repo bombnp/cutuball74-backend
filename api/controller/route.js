@@ -55,8 +55,6 @@ router.put('/admin/edit', error.safeBodyParserJson, admin.editUser)
 
 router.get('/admin/getusers', error.safeBodyParserJson, admin.getUsers)
 
-router.get('/admin/query', error.safeBodyParserJson, admin.queryUser)
-
 router.get('/admin/getstat', admin.getStat)
 
 router.get('/admin/random', admin.randomizeUser)

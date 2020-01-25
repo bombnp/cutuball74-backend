@@ -15,7 +15,7 @@ function userFromRow(row) {
   }
 }
 
-function ticketFromRow(row) {
+function ticketFromRow(roww) {
   return {
     number: row.number,
     name: row.name
@@ -124,20 +124,6 @@ function saveUserToDb(user, callback, conn, overwrite) {
   })
 }
 
-function queryUser(data, callback, conn) {
-  conn = conn || database.getPool()
-  q = 'SELECT * FROM `users` WHERE ?? LIKE ?;'
-  let value = '%' + data.value + '%'
-  conn.query(q, [data.column, value], function(err, results, fields) {
-    if (err) {
-      callback(err, null)
-      return
-    }
-    users = results.map(userFromRow)
-    callback(null, users)
-  })
-}
-
 function getStat(callback, conn) {
   conn = conn || database.getPool()
   q =
@@ -163,7 +149,10 @@ function randomizeUser(callback, conn) {
       return
     }
 
-    if (results[0].checkedin_count == results[0].selected_count) throw 'No more user to randomize'
+    if (results[0].checkedin_count == results[0].selected_count) {
+      callback({ code: "NO_MORE_USER" });
+      return;
+    }
 
     // select unselected users
     q2 =
@@ -272,7 +261,6 @@ module.exports = {
   getUserFromId,
   getUsers,
   saveUserToDb,
-  queryUser,
   getStat,
   randomizeUser,
   clearRandomHistory,

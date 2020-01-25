@@ -55,6 +55,10 @@ function getStat(req, res) {
 function randomizeUser(req, res) {
   user.randomizeUser(function(err, ticket) {
     if (err) {
+      if(err.code == "NO_MORE_USER") {
+        handleError(res, 400, err.code, "No more user left to randomize")
+        return;
+      }
       handleError(res, 500, err.code, err.sqlMessage)
       return;
     }
@@ -97,4 +101,4 @@ function deleteUser(req, res) {
   })
 }
 
-module.exports = { ping, editUser, getUsers, queryUser, getStat, randomizeUser, getRandomHistory, clearRandomHistory, deleteUser }
+module.exports = { ping, editUser, getUsers, getStat, randomizeUser, getRandomHistory, clearRandomHistory, deleteUser }
