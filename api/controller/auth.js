@@ -21,7 +21,7 @@ let jwtOpt = {
  */
 function generateToken(user) {
   return jwt.sign({ role: user.role }, config.secret, {
-    expiresIn: '1h',
+    expiresIn: '14d',
     issuer: jwtOpt.issuer,
     subject: user.id
   })
