@@ -1,4 +1,8 @@
 dispatch:
+        - url: "pinkroadcutuball74.com/*"
+          service: default
         - url: "www.pinkroadcutuball74.com/*"
           service: www
+        - url: "api.pinkroadcutuball74.com/*"
+          service: api
 
