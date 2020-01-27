@@ -1,15 +1,19 @@
 const express = require('express')
 const cors = require('cors')
+const helmet = require('helmet');
 const bodyParser = require('body-parser')
 const passport = require('passport')
 
 const auth = require('./auth.js')
-const dummy = require('./dummy.js')
 const users = require('./users.js')
 const admin = require('./admin.js')
 const error = require('./error.js')
 
 const router = express.Router()
+
+router.use(helmet({
+  hsts: false
+}));
 
 // CONFIG Enable CORS for all route
 router.use(cors())
