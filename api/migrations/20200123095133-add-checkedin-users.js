@@ -22,6 +22,7 @@ exports.up = function(db) {
         type: 'string',
         length: 13,
         notNull: true,
+        unique: true,
         foreignKey: {
           name: 'checked_id_fk',
           table: 'users',
@@ -33,10 +34,7 @@ exports.up = function(db) {
       }
     })
     .then(() => {
-      db.runSql('ALTER TABLE checkedin_users ADD COLUMN createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP')
-    })
-    .then(() => {
-      db.runSql('ALTER TABLE checkedin_users ADD COLUMN modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      db.runSql('ALTER TABLE checkedin_users ADD COLUMN checkedinAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP')
     })
 }
 

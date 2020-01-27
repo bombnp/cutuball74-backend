@@ -21,6 +21,7 @@ exports.up = function(db) {
       type: 'string',
       length:13,
       notNull: true,
+      unique: true,
       foreignKey: {
         name: "selected_id_fk",
         table: "users",
@@ -31,10 +32,8 @@ exports.up = function(db) {
       }
     }
   }).then(() => {
-    db.runSql("ALTER TABLE selected_users ADD COLUMN createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
-  }).then(() => {
-    db.runSql("ALTER TABLE selected_users ADD COLUMN modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-  });;
+    db.runSql("ALTER TABLE selected_users ADD COLUMN selectedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+  })
 };
 
 exports.down = function(db) {

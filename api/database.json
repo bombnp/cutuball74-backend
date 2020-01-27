@@ -3,7 +3,14 @@
     "driver":"mysql",
     "user": {"ENV":"DB_USER"},
     "password": {"ENV":"DB_PASS"},
-    "database": {"ENV":"DB_NAME"},
+    "database": "cutuballdbdev",
+    "socketPath" : {"ENV":"DB_SOCKET"}
+  },
+  "prod":{
+    "driver":"mysql",
+    "user": {"ENV":"DB_USER"},
+    "password": {"ENV":"DB_PASS"},
+    "database": "cutuballdb",
     "socketPath" : {"ENV":"DB_SOCKET"}
   }
 }
