@@ -104,3 +104,9 @@ dist
 .tern-port
 
 cloudsql/
+
+
+# Python
+
+loadtest/__pycache__/
+loadtest/venv/
