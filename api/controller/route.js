@@ -3,13 +3,17 @@ const cors = require('cors')
 const helmet = require('helmet');
 const bodyParser = require('body-parser')
 const passport = require('passport')
+const Recaptcha = require('express-recaptcha').RecaptchaV2
 
 const auth = require('./auth.js')
 const users = require('./users.js')
 const admin = require('./admin.js')
 const error = require('./error.js')
+const config = require('../config.js')
 
 const router = express.Router()
+
+const recaptcha = new Recaptcha(config.recaptchaKeys.site, config.recaptchaKeys.secret)
 
 router.use(helmet({
   hsts: false
@@ -34,7 +38,7 @@ authServ = auth.authServer
 router.post('/token', authServ.token(), authServ.errorHandler())
 passport.use(auth.jwtStrategy)
 
-router.post('/register', error.safeBodyParserJson, users.register)
+router.post('/register', error.safeBodyParserJson, recaptcha.middleware.verify, auth.verifyRecaptcha, users.register)
 
 // All routes below will require jwt to access
 router.use(passport.authenticate('jwt', { session: false }))

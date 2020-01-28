@@ -16,4 +16,9 @@ const dbConfig = {
 
 const secret = process.env.SERVER_SECRET;
 
-module.exports = {dbConfig, secret}
+const recaptchaKeys = {
+  site: process.env.RECAPTCHA_SITEKEY,
+  secret: process.env.RECAPTCHA_SECRETKEY,
+}
+
+module.exports = {dbConfig, secret, recaptchaKeys}

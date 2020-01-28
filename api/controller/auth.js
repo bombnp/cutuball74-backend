@@ -69,14 +69,28 @@ authServer.exchange(
 
 function checkAdminStatus(req, res, next) {
   let user = req.user
-  if (user.role != 'admin') handleError(res, 403, 'NOTADMIN', 'User is not admin')
-  else next()
+  if (user.role != 'admin') {
+    handleError(res, 403, 'NOTADMIN', 'User is not admin')
+    return;
+  }
+  next()
 }
 
 function checkStaffStatus(req, res, next) {
   let user = req.user
-  if (user.role != 'staff' && user.role != 'admin') handleError(res, 403, 'NOTSTAFF', 'User is not staff')
-  else next()
+  if (user.role != 'staff' && user.role != 'admin') {
+    handleError(res, 403, 'NOTSTAFF', 'User is not staff')
+    return;
+  }
+  next()
 }
 
-module.exports = { authServer, jwtStrategy, checkAdminStatus, checkStaffStatus }
+function verifyRecaptcha(req, res, next) {
+  if(req.recaptcha.error) {
+    handleError(res, 400, "RECAPTCHAERR", "Invalid Recaptcha response");
+    return;
+  }
+  next()
+}
+
+module.exports = { authServer, jwtStrategy, checkAdminStatus, checkStaffStatus, verifyRecaptcha }
