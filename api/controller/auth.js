@@ -86,7 +86,7 @@ function checkStaffStatus(req, res, next) {
 }
 
 function verifyRecaptcha(req, res, next) {
-  if(req.recaptcha.error) {
+  if(req.recaptcha.error && !(req.body['bypassrecaptcha'] == "true" && config.recaptchaKeys.bypass)) {
     handleError(res, 400, "RECAPTCHAERR", "Invalid Recaptcha response");
     return;
   }

@@ -19,6 +19,7 @@ const secret = process.env.SERVER_SECRET;
 const recaptchaKeys = {
   site: process.env.RECAPTCHA_SITEKEY,
   secret: process.env.RECAPTCHA_SECRETKEY,
+  bypass: (process.env.RECAPTCHA_ALLOW_BYPASS == "TRUE")
 }
 
 module.exports = {dbConfig, secret, recaptchaKeys}
