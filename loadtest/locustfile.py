@@ -36,7 +36,7 @@ class UserTask(TaskSet):
             "faculty": "21",
             "tel": '0' + genrandstr(charset = '0123456789', charlen= 9),
         }
-        self.checkin = False
+        self.checkinf = False
 
 
     @task(5)
@@ -56,6 +56,22 @@ class UserTask(TaskSet):
             "password" : password
             })
         return res.json()['access_token']
+
+    @task(20)
+    def getticket(self):
+        self.checkin()
+        with self.client.get("getticket", catch_response=True, headers = self.headers) as res:
+            if self.checkinf:
+                print("GOt " + str(res.content))
+                if res.status_code == 200 and res.json()[0]['name'] == self.ud['name']:
+                    res.success()
+                else:
+                    res.failure("ticket error or name mismatch")
+            else:
+                if res.status_code == 403:
+                    res.success()
+                else:
+                    res.failure("Expect forbid gettick no check actual status code {} -> {}".format(res.status_code, res.content))
 
 
     @task(5)
@@ -79,10 +95,10 @@ class UserTask(TaskSet):
     @task(5)
     def checkin(self):
         with self.client.post('/staff/checkin', headers = self.staffheaders, json = {"id":self.ud['ID']}, catch_response=True) as res:
-            if not self.checkin:
+            if not self.checkinf:
                 if res.status_code == 200:
                     res.success()
-                    self.checkin = True
+                    self.checkinf = True
                 else:
                     res.failure("Checking fail")
                 
