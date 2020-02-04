@@ -24,24 +24,29 @@ thaicharset = ''.join([chr(ord('ก') + l) for l in range(ord('๛') - ord('ก'
 class UserTask(TaskSet):
     
     def on_start(self):
-        self.ud = {
-        "ID": gennatid(),
-        "name": genrandstr(thaicharset, 20) + ' ' + genrandstr(thaicharset, 5) + ' ' + genrandstr(thaicharset + ascii_letters, 20),
-        "email": genrandstr(charlen = 40) + '@' + genrandstr(charlen = 10) + '.com',
-        "faculty": "21",
-        "tel": '0' + genrandstr(charset = '0123456789', charlen= 9),
-        }
         self.register()
         self.login()
         self.stafflogin()
+        
+    def reinituser(self):
+        self.ud = {
+            "ID": gennatid(),
+            "name": genrandstr(thaicharset, 20) + ' ' + genrandstr(thaicharset, 5) + ' ' + genrandstr(thaicharset + ascii_letters, 20),
+            "email": genrandstr(charlen = 40) + '@' + genrandstr(charlen = 10) + '.com',
+            "faculty": "21",
+            "tel": '0' + genrandstr(charset = '0123456789', charlen= 9),
+        }
         self.checkin = False
 
 
+    @task(5)
     def register(self):
+        self.reinituser()
         modud = dict(self.ud)
         modud["bypassrecaptcha"] = "true"
         res = self.client.post(json = modud,
             url = "/register")
+        self.login()
 
 
     def reqtoken(self, username, password):
