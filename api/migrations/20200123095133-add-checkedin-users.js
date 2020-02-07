@@ -15,12 +15,10 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-  return db
-    .createTable('checkedin_users', {
+  return db.createTable('checkedin_users', {
       number: { type: 'int', primaryKey: true, autoIncrement: true },
       id: {
         type: 'string',
-        length: 13,
         notNull: true,
         unique: true,
         foreignKey: {

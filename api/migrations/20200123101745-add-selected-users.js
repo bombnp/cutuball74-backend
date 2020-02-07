@@ -19,7 +19,6 @@ exports.up = function(db) {
     number: {type: 'int', primaryKey: true},
     id: {
       type: 'string',
-      length:13,
       notNull: true,
       unique: true,
       foreignKey: {

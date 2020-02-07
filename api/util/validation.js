@@ -49,9 +49,9 @@ function validateUserJson(data, callback) {
 
   //Must return exaxtly true if succeeds
   let validators = [ 
-   (data) => data.ID.length == 13 || "Invalid id length",
-   (data) => fieldvalidator.isNumeric(data.ID) || "Non numeric ID",
-   (data) => validateThaiID(data.ID) || "Invalid ID checksum",
+  //  (data) => data.ID.length == 13 || "Invalid id length",
+  //  (data) => fieldvalidator.isNumeric(data.ID) || "Non numeric ID",
+  //  (data) => validateThaiID(data.ID) || "Invalid ID checksum",
    (data) => fieldvalidator.isMobilePhone(data.tel, 'th-TH') || "Invalid mobile phone",
    (data) => fieldvalidator.isEmail(data.email) || "Invalid Email"
   ];
