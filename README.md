@@ -5,7 +5,6 @@ Special thanks to the contributors for making this happen:
 - [@BossWT](https://github.com/BossWT)
 - [@firm4458](https://github.com/firm4458)
 - [@Pattanachai](https://github.com/Pattanachai)
-============
 
 ## โครงสร้าง Directory
 
